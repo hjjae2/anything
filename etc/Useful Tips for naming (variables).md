@@ -1,0 +1,1 @@
+https://medium.com/better-programming/useful-tips-for-naming-your-variables-8139cc8d44b5
