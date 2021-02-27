@@ -25,7 +25,7 @@ WAS 는 Servelet Container 개념을 포함한다.
 
 Apache Tomcat, IBM WebSphere, Oracle WebLogic, Glassfish, JBoss 등이 있다.
 
-**실행 절차**
+**WAS 내부의 Container들 중 Servlet Container의 실행 절차**
 
 1. 웹서버로부터 요청이 들어오면, WAS 내의 Container 가 요청을 받는다.
 2. Container는 배포서술자(web.xml)를 참조하여 해당 Servlet 에 대한 Thread 를 생성하고 HttpServletRequest, HttpServletResponse 객체를 생성하여 (파라미터로) 전달한다.

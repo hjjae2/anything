@@ -1,8 +1,8 @@
 ## Servlet
 
-자바를 사용하여 웹을 만들기 위해 필요한 기술이다.
+~~자바를 사용하여 웹을 만들기 위해 필요한 기술이다.~~
 
-클라이언트의 요청을 처리하고, 결과를 반환하는 (Servlet 클래스의 구현 규칙을 지킨) 자바 프로그램(클래스)이다.
+**클라이언트의 요청을 처리하고, 결과를 반환하는 (Servlet 클래스의 구현 규칙을 지킨) Java 프로그램(클래스)이다.**
 
 서블릿은 자바로 구현된 CGI라고 불린다.
 
@@ -12,6 +12,9 @@
 
 > **\* CGI(Common GateWay Interface)란?**<br>
 외부 프로그램과 웹서버 사이에서 정보를 주고받는 방법/규약을 말한다.
+
+<br>
+<br>
 
 **Servlet Interface**
 
@@ -29,14 +32,18 @@
 - getServletConfig()<br>
   서블릿이 시작 정보를 get 할 수 있도록 사용하는 메소드이다.
 
+  <br>
+
 **ServletConfig Interface**
 
-서블릿을 초기화하는 동안, 서블릿 컨테이너가 서블릿에게 정보를 전달하기 위해 사용하는 Servlet configuration object 이다.
+서블릿을 초기화하는 동안, **서블릿 Container -> 서블릿**에게 정보를 전달하기 위해 사용하는 Servlet configuration object 이다.
 
 - getServletName()
 - getServletContext()
 - getInitParameter()
 - getInitParameterNames()
+
+<br>
 
 **GenericServlet Abstract Class**
 
@@ -45,6 +52,8 @@
 Servlet, ServletConfig 인터페이스를 구현했다. (Servlet 기능을 구현)
 
 GenericServlet 을 상속받아 구현한 사용자 서블릿은, 사용되는 프로토콜에 따라 service()를 오버라이딩해서 구현한다.
+
+<br>
 
 **HttpServlet Abstract Class**
 
@@ -60,7 +69,7 @@ GenericServlet 을 상속받아 HTTP 프로토콜을 사용하는 웹 브라우�
 
 > 서블릿은 멀티쓰레드 환경에서 처리될 수 있는 클래스이다. 이것을 분석하면 멀티쓰레드 환경에서의 코드 기법을 알 수 있지 않을까 싶다.
 
-<br>
+<br><br>
 
 >Reference
 > 1. https://mangkyu.tistory.com/14
