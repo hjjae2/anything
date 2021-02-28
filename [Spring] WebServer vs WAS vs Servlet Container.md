@@ -25,13 +25,13 @@ WAS 는 Servelet Container 개념을 포함한다.
 
 Apache Tomcat, IBM WebSphere, Oracle WebLogic, Glassfish, JBoss 등이 있다.
 
-**WAS 내부의 Container들 중 Servlet Container의 실행 절차**
+**(WAS 내부의 Container들 중) Servlet Container의 실행 절차**
 
-1. 웹서버로부터 요청이 들어오면, WAS 내의 Container 가 요청을 받는다.
-2. Container는 배포서술자(web.xml)를 참조하여 해당 Servlet 에 대한 Thread 를 생성하고 HttpServletRequest, HttpServletResponse 객체를 생성하여 (파라미터로) 전달한다.
-3. Container는 Servlet 을 호출한다.
-4. 호출된 Servlet의 작업을 담당하게 된 Thread(2번에서 미리 생성된 Thread)는 요청에 따라 doPost(), doGet()을 호출한다.
-5. 호출된 doPost(), doGet() 메소드는 생성된 동적 페이지를 Response 객체에 실어서 Container 에 전달한다.
+1. 웹서버로부터 요청이 들어오면, WAS 내의 Servlet Container 가 요청을 받는다.
+2. Servlet Container 는 HttpServletRequest, HttpServletResponse 객체를 생성한다.
+3. 배포서술자(web.xml)를 참조하여 Servlet 을 호출한다. (Thread를 생성한다.)
+4. 호출된 Servlet은 service() 메소드를 호출하고, 요청에 맞게 doMethod() 메소드를 호출한다.
+5. 호출된 doMethod() 메소드는 동적으로 페이지를 생성하고 HttpServletResponse 객체에 응답을 실어서 Servlet Container 에 전달한다. (아마도 이때 우리가 작성한 코드(Controller, Service, ...)가 동작하여 동적 페이지가 생성될 것이다.)
 6. Container는 전달받은 Response 객체를 HTTPResponse 형태로 전환하여 웹서버에 전달한다. 생성되었던 Thread를 종료하고 HttpServletRequest, HttpServletResponse 객체를 소멸시킨다.
 
 > (PHP의 경우는 WAS의 역할을 하지만 웹서버의 모듈 형태로 작동하므로 WAS라 불리는데 이견이 많다 ... ?)
