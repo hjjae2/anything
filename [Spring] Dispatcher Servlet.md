@@ -8,7 +8,7 @@
 
 잠시 Servlet 개념으로 돌아가보면, 기존에는 모든 Servlet 에 대해 web.xml 에서 URL 매핑을 등록해주어야 했다. 그런데 Dispatcher-Servlet 이 등장하면서 해당 애플리케이션으로 들어오는 모든 요청을 핸들링 해주었다. web.xml의 역할을 축소시키고 편리함을 제공했다.
 
-즉, 1. 모든 요청을 한 곳(DispatcherServlet)에서 받아서 필요한 공통의 작업을 처리하고 2. 요청에 맞는 handler(Controller) 로 위임(dispatch), 3. 해당 handler의 실행 결과를 Http Response 형태로 만들어 반환하는 역할을 하낟.
+즉, 1. 모든 요청을 한 곳(DispatcherServlet)에서 받아서 필요한 공통의 작업을 처리하고 2. 요청에 맞는 handler(Controller) 로 위임(dispatch), 3. 해당 handler의 실행 결과를 Http Response 형태로 만들어 반환하는 역할을 한다.
 
 > " Spring이 없는 JAVA 런타임에는 Controller 가 존재하지 않는다. 따라서 우리는 서블릿 객체를 생성하고, 그것을 web.xml 에 모두 등록해줘야 했다. "
 
@@ -46,6 +46,11 @@
    최종적으로 페이지를 만들고 DispatcherServlet 에 전달한다.
 8. **DispatcherServlet -> Client (or Web Server)**<br>
    결과물을 응답한다.
+  
+<img src="https://user-images.githubusercontent.com/35790290/109492994-2d31f600-7acf-11eb-8ace-250d73bb30d2.png" width="80%" height="80%">
+
+> 출처: https://bk-investing.tistory.com/57?category=903513
+
 
 <br>
 
