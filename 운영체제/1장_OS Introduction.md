@@ -5,6 +5,12 @@
 1. 프로그램이 동작하는 것을 쉽게 해준다.
 2. 시스템을 효율적으로, 정확하게 운영한다.
 3. **'자원관리자' 이다.**
+   - 물리 자원 : CPU, Dram(Memory), Disk, keyboard(KBD), Network, ...
+   - 가상 자원 : Process, Thread, Virtual Memory, Page, File, Directory, Driver, Protocol, ...
+
+**\* OSTEP(OS Three Easy Picese) : Virtualization, Concurrency, Persistence**
+
+**\* OS 의 기본 목표 : Abstraction, Performance, Protection, Reliability, ...**
 
 <br>
 
@@ -45,6 +51,7 @@ user1   user2   user3   ...   userN
 |IPC|Inter Process Comunication<br>Process 간 통신하는 것|
 |Signal|Process 에게 event 를 알리는 것(단위(?))|
 |Mode|Kernel mode<br>User mode<br>ex. system call 을 사용하기 위해 mode switch 가 발생한다.|
+|System call|OS 가 제공하는 API(인터페이스)|
 
 <br>
 
