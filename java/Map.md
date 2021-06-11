@@ -5,9 +5,11 @@
 <br>
 
 ###  TreeMap
-1. Red-Block Tree 로 구현되었다.
+1. Red-Black Tree 로 구현되었다.
 2. C++ 에서의 map 과 유사하다.
 3. 대소 비교가 가능해야 한다. (Compariable 인터페이스를 구현해야 한다. compareTo())
+
+> Red-Black Tree 란? Balacned Binary Search Tree 라고 볼 수 있다.
 
 <br>
 
@@ -32,6 +34,27 @@
 2. 순서를 유지한다. (Insert 된 순서를 유지한다.)
 3. HashMap 의 subclass 이다.
 4. Key 값이 중복된다면, 뒤에 삽입된 것이 유지된다.
+
+Key 값이 중복될 때, 노드가 새로 생기는 것이 아니라 기존 노드에 값이 덮어쓰이는 것에 유의한다.
+
+```
+    public void test() {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("1", 1);
+        linkedHashMap.put("2", 2);
+        linkedHashMap.put("3", 3);
+        linkedHashMap.put("1", 4);
+
+        for(Map.Entry<String, Integer> entry : linkedHashMap.entrySet()) {
+            System.out.println(entry);
+            
+            // 출력은 아래와 같다.
+            // 1=4
+            // 2=2
+            // 3=3
+        }
+    }
+```
 
 <br>
 

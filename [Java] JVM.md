@@ -66,6 +66,21 @@ GC를 수행하는 모듈(Thread)이 있다.
 
 프로그램을 수행하기 위해 OS 로부터 할당받은 메모리 공간이다.
 
+<br>
+
+아래는 SpringBoot 프로젝트(gg-pigs) 의 build jar 를 해제했을 때 생기 폴더/파일이다.
+
+<img width="466" alt="image" src="https://user-images.githubusercontent.com/35790290/121664182-2c532c00-cae2-11eb-9e0e-9cce71513338.png">
+
+**BOOT-INF** 
+- BOOT-INF/classes : 작성한 코드들이 바이트코드(.class) 형태로 존재한다.
+- BOOT-INF/lib : 외부 라이브러리(jar)들이 존재한다.
+
+**META-INF**
+- META-INF/MANIFEST.MF : Start-Class, Spring-Boot-Classes, Spring-Boot-Lib, Spring-Boot-Version, Main-Class 등의 정보가 기술되어 있다.
+
+**org.springframework.boot.loader**
+- Launcher, Loader, Runner 등이 존재한다.
 
 <br>
 
