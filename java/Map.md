@@ -5,9 +5,11 @@
 <br>
 
 ###  TreeMap
-1. Red-Block Tree 로 구현되었다.
+1. Red-Black Tree 로 구현되었다.
 2. C++ 에서의 map 과 유사하다.
 3. 대소 비교가 가능해야 한다. (Compariable 인터페이스를 구현해야 한다. compareTo())
+
+> Red-Black Tree 란? Balacned Binary Search Tree 라고 볼 수 있다.
 
 <br>
 
