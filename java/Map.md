@@ -33,6 +33,27 @@
 3. HashMap 의 subclass 이다.
 4. Key 값이 중복된다면, 뒤에 삽입된 것이 유지된다.
 
+Key 값이 중복될 때, 노드가 새로 생기는 것이 아니라 기존 노드에 값이 덮어쓰이는 것에 유의한다.
+
+```
+    public void test() {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("1", 1);
+        linkedHashMap.put("2", 2);
+        linkedHashMap.put("3", 3);
+        linkedHashMap.put("1", 4);
+
+        for(Map.Entry<String, Integer> entry : linkedHashMap.entrySet()) {
+            System.out.println(entry);
+            
+            // 출력은 아래와 같다.
+            // 1=4
+            // 2=2
+            // 3=3
+        }
+    }
+```
+
 <br>
 
 \* Entry 클래스?
