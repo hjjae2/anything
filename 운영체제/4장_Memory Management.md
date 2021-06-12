@@ -12,7 +12,7 @@
 
 Early System -> Multiprogramming & Time sharing -> Virtual memory(Address space)
 
-<br>
+<br><br>
 
 **Ealry System**
 
@@ -24,7 +24,7 @@ Single programming system
 
 \* Overlay : 현재 꼭 필요한 Part 만 메모리에 올리는 것 (Part 번갈아가면서 실행)
 
-<br>
+<br><br>
 
 **Multiprogramming & Time sharing**
 
@@ -34,11 +34,11 @@ Multiprogramming : Multiple processes are ready to run
 
 Time sharing : Switch CPU among ready processes
 
-이슈 
+이슈
 - Protection
 - Free space (It isn't easy to find free space)
 
-<br>
+<br><br>
 
 **Virtual memory (Address space)**
 
@@ -60,7 +60,7 @@ stack, heap 영역 : 할당받는 사이즈가 동적이다. (stack : 컴파일�
 
 **메모리 사용을 잘못 했을 때, 주로 Segmantation fault 가 발생한다.** 
 
-<br>
+<br><br>
 
 **Address Translation**
 
@@ -160,3 +160,9 @@ Fixed size 사용 (관리 용이해진다 -> HW 적으로도 support 원활해�
 
 - Cache of recent used PTE (Better name would be an address-translation cache)
 - **\* 가능한 cache 를 사용하자!!**
+
+
+
+> References
+> 1. Virtual Memory, https://velog.io/@woo0_hooo/OS-CH3-3-Virtual-Memory
+> 2. Segmentation, https://wansook0316.github.io/cs/os/2020/04/06/운영체제-정리-15-세그멘테이션.html
