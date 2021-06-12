@@ -12,6 +12,8 @@
 
 Early System -> Multiprogramming & Time sharing -> Virtual memory(Address space)
 
+<br>
+
 **Ealry System**
 
 Single programming system
@@ -21,6 +23,8 @@ Single programming system
 물리 메모리보다 큰 메모리가 필요하다면, **Overlay** 기법을 사용한다.
 
 \* Overlay : 현재 꼭 필요한 Part 만 메모리에 올리는 것 (Part 번갈아가면서 실행)
+
+<br>
 
 **Multiprogramming & Time sharing**
 
@@ -33,6 +37,8 @@ Time sharing : Switch CPU among ready processes
 이슈 
 - Protection
 - Free space (It isn't easy to find free space)
+
+<br>
 
 **Virtual memory (Address space)**
 
@@ -74,6 +80,16 @@ stack, heap 영역 : 할당받는 사이즈가 동적이다. (stack : 컴파일�
 >
 > - Base/Limit registers, Segmentation related registers, Paging related registers, TLB + Circuitry
 
+<br>
+
+### Memory Management
+
+- Base / Limit Registers
+- Segmentation
+- Paiging
+
+<br>
+
 **Base & Limit registers**
 
 > Other mechanisms : Segmentation, Paging
@@ -87,6 +103,8 @@ PC : 128
 물리 메모리 주소 : 32768 + 128 = 32896
 ```
 
+<br>
+
 **Segmentation**
 
 Base & Limit Register 메커니즘의 경우는 필요한 메모리가 통으로(연속해서) free 해야 물리 메모리에 올릴 수 있다. 이 문제를 해결하기 위한 메커니즘 중 하나이다.
@@ -97,27 +115,48 @@ Base & Limit register 기법을 base 로 한다.
 
 이 세그먼트들은 분리(독립)하여 물리 메모리에 올린다. (이때 각각의 segment 는 각각의 base & limit register 를 갖는다.)
 
-물리 메모리의 주소 : Segment number + offset 
+> \* Segment table 을 사용해 address translation 을 진행한다.
 
-Sharing : 특정 segment 영역을 공유할 수 있다.
+- 물리 메모리의 주소 : Segment number + offset 
 
-Protection : 세그먼트 별로 proteciton 정책을 정할 수 있다. (granularity)
+- Sharing : 특정 segment 영역을 공유할 수 있다.
 
-Segment size
+- Protection : 세그먼트 별로 proteciton 정책을 정할 수 있다. (granularity)
+
+**Segment-Size**
 
 - Coarse-grained (크게 작업) : 관리 쉬워진다.
 
 - Fine-grained (작게 작업) : 효율성 향상, 관리를 위해 segment table 사용한다.
 
-할당 방법
+**Allocation**
 
 - Best-fit
 - Worst-fit
 - First-fit
 - Buddy algorithm
 
-문제
+문제점
 
 - 외부 단편화 : segment 의 사이즈는 가변적인데, 이것은 외부 단편화를 특히 더  야기시킨다.
 
 <br>
+
+### Paging
+
+Page table 사용 (Page number, offset : page size * page number + offset)
+ - 32bit 환경에서 page 의 크기 : 4KB (보통)
+ - Memory 에 저장 (CPU register 에 저장하기엔 사이즈가 크다.)
+
+Fixed size 사용 (관리 용이해진다 -> HW 적으로도 support 원활해진다.)
+
+여기까지는 paging 의 속도는 굉장히 느리다.
+- PTE 주소를 찾아야한다. (memory)
+- PTE에서 fetch 할 때에도 memory 에 접근한다.
+- Bits 를 체크한다. (PTE Bits)
+- 물리 메모리에 올릴 때, 또 memory 에서 읽는다.
+
+\* **TLB(Translation Lookaside Buffer) 기법 -> Faster translation**
+
+- Cache of recent used PTE (Better name would be an address-translation cache)
+- **\* 가능한 cache 를 사용하자!!**
