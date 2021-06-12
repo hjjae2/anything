@@ -150,9 +150,6 @@ Page table 사용 (Page number, offset : page size * page number + offset)
 
 Fixed size 사용 (관리 용이해진다 -> HW 적으로도 support 원활해진다.)
 
-
-> References
-> 1. Virtual Memory, https://velog.io/@woo0_hooo/OS-CH3-3-Virtual-Memory
 여기까지는 paging 의 속도는 굉장히 느리다.
 - PTE 주소를 찾아야한다. (memory)
 - PTE에서 fetch 할 때에도 memory 에 접근한다.
@@ -163,3 +160,8 @@ Fixed size 사용 (관리 용이해진다 -> HW 적으로도 support 원활해�
 
 - Cache of recent used PTE (Better name would be an address-translation cache)
 - **\* 가능한 cache 를 사용하자!!**
+
+
+
+> References
+> 1. Virtual Memory, https://velog.io/@woo0_hooo/OS-CH3-3-Virtual-Memory
