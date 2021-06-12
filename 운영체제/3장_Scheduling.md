@@ -195,7 +195,7 @@ Bus Snooping : A mechanism for supporting coherence
 
 **Issue on Multiprocessor**
 
-Synchronization
+Synchronization : locking 과 같은 기법 필요
 
 Cache affinity
 
