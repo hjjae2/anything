@@ -165,3 +165,4 @@ Fixed size 사용 (관리 용이해진다 -> HW 적으로도 support 원활해�
 
 > References
 > 1. Virtual Memory, https://velog.io/@woo0_hooo/OS-CH3-3-Virtual-Memory
+> 2. Segmentation, https://wansook0316.github.io/cs/os/2020/04/06/운영체제-정리-15-세그멘테이션.html
