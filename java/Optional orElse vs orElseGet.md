@@ -28,6 +28,8 @@ public class Main {
 
 <br>
 
+**예제 코드**
+
 ```
 // check 값이 non-null 일 때,
 func() 실행합니다.
@@ -39,6 +41,55 @@ func() 실행합니다.
 func() 실행합니다.
 func()
 func()
+```
+
+<br>
+
+```
+// if str is null, length is 0
+// if str is not null, length will be str's length
+
+String str = null; // str = "str";
+int length = Optional.ofNullable(str).map(String::length).orElse(0);
+System.out.println(length);
+```
+
+<br>
+
+```
+public static void main(String[] args) {
+    List<String> strs = Arrays.asList("s1", "s2", "s3");
+
+    int length = getAsOptional(strs, 3).map(String::length).orElse(0);
+    System.out.println(length);
+}
+
+public static <T> Optional<T> getAsOptional(List<T> list, int index) {
+    try {
+        return Optional.of(list.get(index));
+    } catch (ArrayIndexOutOfBoundsException e) {
+        return Optional.empty();
+    }
+}
+```
+
+<br>
+
+```
+public static void main(String[] args) {
+    List<String> strs = Arrays.asList("s1", "s2", "s3");
+    int length = getAsOptional(strs, 2).map(String::length).orElse(0);
+    getAsOptional(strs, 2).ifPresent(str -> System.out.println(str)); // 출력: "s2"
+    getAsOptional(strs, 3).ifPresent(str -> System.out.println(str)); // 출력: x
+}
+
+public static <T> Optional<T> getAsOptional(List<T> list, int index) {
+    try {
+        return Optional.of(list.get(index));
+    } catch (ArrayIndexOutOfBoundsException e) {
+        return Optional.empty();
+    }
+}
 ```
 
 <br>
@@ -73,3 +124,4 @@ func()
 ```
 
 > orElse() vs orElseGet(), https://velog.io/@joungeun/orElse-vs-orElseGet
+> 자바8 Optional 3부: Optional을 Optional답게, https://www.daleseo.com/java8-optional-effective/
