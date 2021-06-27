@@ -41,4 +41,35 @@ func()
 func()
 ```
 
+<br>
+
+**[참고]**
+
+```
+    /**
+     * Return the value if present, otherwise return {@code other}.
+     *
+     * @param other the value to be returned if there is no value present, may
+     * be null
+     * @return the value, if present, otherwise {@code other}
+     */
+    public T orElse(T other) {
+        return value != null ? value : other;
+    }
+
+    /**
+     * Return the value if present, otherwise invoke {@code other} and return
+     * the result of that invocation.
+     *
+     * @param other a {@code Supplier} whose result is returned if no value
+     * is present
+     * @return the value if present otherwise the result of {@code other.get()}
+     * @throws NullPointerException if value is not present and {@code other} is
+     * null
+     */
+    public T orElseGet(Supplier<? extends T> other) {
+        return value != null ? value : other.get();
+    }
+```
+
 > orElse() vs orElseGet(), https://velog.io/@joungeun/orElse-vs-orElseGet
