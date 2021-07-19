@@ -1,10 +1,12 @@
-### CodeIgniter 객체에 대한 내용
+## CodeIgniter load->library 분석 내용!
 
-먼저 아래 명령어에 대해 살펴보자.
+### 분석해보자.
+
+아래 명령어에 대해 살펴보자.
 
 `$this->load->library()`
 
-[GitHub](https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Loader.php), Project의 System 폴더 내에서 코드를 확인할 수 있다.
+[GitHub](https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Loader.php) 이나 Project의 `System` 폴더 내에서 코드를 확인할 수 있다.
 
 
 ```php
@@ -124,10 +126,11 @@
 	}
 ```
 
-
 <br>
 
-이제 이것들을 실제로 line by line 으로 출력/테스트/검증 해보자.
+현재 회사에서는 위의 내용과는 약간 다르다. (By 버전, 커스터마이징)
+
+실제 소스는 아래의 형태와 같다. 이제 이것들을 실제로 line by line 으로 출력/테스트/검증 해보자.
 
 ```php
 	protected function _ci_load_class($class, $params = NULL, $object_name = NULL)
@@ -171,11 +174,12 @@ class => checklogin
 
 common/Cookiesecure :
 class => Cookiesecure
-
-0 : parser :
 ```
 
 <br>
+
+핵심 메서드인 `_ci_load_class` 전체 내용은 다음과 같다.
+
 
 ```php
 	protected function _ci_load_class($class, $params = NULL, $object_name = NULL)
@@ -296,7 +300,50 @@ class => Cookiesecure
 	}
 ```
 
+여기서 중요한 부분은 `$subclass` 가 아닌, `$filepath` 부분으로 시작되는 부분이다.
+
+### `$subclass` 부분
+
+`$subclass = APPPATH.'libraries/'.$subdir.config_item('subclass_prefix').$class.'.php';`
+
+(`subclass_prefix = "MY_"`)
+
+즉 library 이되, MY_~~~ 으로 되는 라이브러리를 로드하는 부분이다.
+
 <br>
+
+### `$filepath` 부분
+
+`$filepath = $path.'libraries/'.$subdir.$class.'.php';`
+
+우리가 보통 사용하는 libraries 밑의 파일을 찾는다.
+
+핵심이 되는 부분은 다음과 같다.
+
+```
+if (in_array($filepath, $this->_ci_loaded_files))
+{
+	if ( ! is_null($object_name))
+	{
+		$CI =& get_instance();
+		if ( ! isset($CI->$object_name))
+		{
+			return $this->_ci_init_class($class, '', $params, $object_name);
+		}
+	}
+	$is_duplicate = TRUE;
+	log_message('debug', $class." class already loaded. Second attempt ignored.");
+	return;
+}
+```
+`$object_name` 이 선언되어 있다면, CI 객체에서 해당 프로퍼티가 있는지 살피고 없으면 로드해준다.
+
+그 외의 경우(alias 가 없거나, 중복된 alias)는 무시한다.
+
+
+<br>
+
+### 로그를 확인해보자.
 
 로그에 다음과 같이 찍히는 것을 확인할 수 있다.
 
@@ -330,8 +377,35 @@ DEBUG - 2021-07-19 21:43:24 --> Model Class Initialized
 
 ![image](https://user-images.githubusercontent.com/35790290/126161580-533235ff-aa86-46e1-8e8c-fcc861554460.png)
 
-
 <br>
+
+### 결론
+
+싱글톤으로 Loaded library 를 관리할 때, 파일의 path/name 형태로 Key 값을 관리한다.
+
+
+```php
+$filepath = $path.'libraries/'.$subdir.$class.'.php';
+```
+
+alias 가 있다면, CI 객체에 해당 alias의 property 가 있는지 확인한다.
+
+없다면 선언해주고, 있다면 중복된 값이기에 무시한다. (logging)
+
+```
+if ( ! is_null($object_name))
+{
+	$CI =& get_instance();
+		if ( ! isset($CI->$object_name))
+		{
+			return $this->_ci_init_class($class, '', $params, $object_name);
+		}
+}
+```
+
+<br><br>
+
+## [참고] CI 객체
 
 ```php
 Index Object
