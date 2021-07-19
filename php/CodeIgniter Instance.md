@@ -296,6 +296,42 @@ class => Cookiesecure
 	}
 ```
 
+<br>
+
+로그에 다음과 같이 찍히는 것을 확인할 수 있다.
+
+```
+// 아래와 같이 사용한다면
+$this->load->library("Lib_test", null, "test");
+$this->load->library("Lib_test");
+print_r($this->lib_test->getHi());
+
+
+DEBUG - 2021-07-19 21:41:21 --> Helper loaded: url_helper
+DEBUG - 2021-07-19 21:41:21 --> Model Class Initialized
+DEBUG - 2021-07-19 21:41:21 --> Lib_test class already loaded. Second attempt ignored.
+DEBUG - 2021-07-19 21:41:21 --> Model Class Initialized
+DEBUG - 2021-07-19 21:41:21 --> User Agent Class Initialized
+```
+
+![image](https://user-images.githubusercontent.com/35790290/126161269-00bb8676-c53e-47f5-842f-8a455e9008ba.png)
+
+```php
+// 아래와 같이 사용한다면,
+
+$this->load->library("Lib_test");
+$this->load->library("Lib_test", null, "test");
+print_r($this->lib_test->getHi());
+
+DEBUG - 2021-07-19 21:43:24 --> Helper loaded: /hcommon/hosting_helper
+DEBUG - 2021-07-19 21:43:24 --> Helper loaded: url_helper
+DEBUG - 2021-07-19 21:43:24 --> Model Class Initialized
+```
+
+![image](https://user-images.githubusercontent.com/35790290/126161580-533235ff-aa86-46e1-8e8c-fcc861554460.png)
+
+
+<br>
 
 ```php
 Index Object
