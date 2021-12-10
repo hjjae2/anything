@@ -8,7 +8,7 @@ Client 는 API Gateway(단일 API) 만 바라보고 작업할 수 있다.
 
 API Gateway 는 인증, 인가, LB, Routing, Logging, CircuitBreaker 의 역할을 한다. (?)
 
-### Netflix Rebbon
+### Netflix Ribbon
 
 Spring Cloud 에서 MSA 간 통신이 필요하다.
 
