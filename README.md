@@ -13,3 +13,5 @@
 - <a href="https://github.com/hjjae2/Anything/tree/main/PHP" style="color:black">&nbsp;PHP</a>
 - <a href="https://github.com/hjjae2/Anything/tree/main/SPRING" style="color:black">&nbsp;SPRING</a>
 - <a href="https://github.com/hjjae2/Anything/tree/main/WEB" style="color:black">&nbsp;WEB</a>
+- <a href="https://github.com/hjjae2/Anything/tree/main/NETWORK" style="color:black">&nbsp;NETWORK</a>
+- <a href="https://github.com/hjjae2/Anything/tree/main/DB" style="color:black">&nbsp;DB</a>

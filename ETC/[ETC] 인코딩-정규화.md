@@ -1,0 +1,125 @@
+---
+layout: post
+title:  "인코딩? 정규화?"
+author: "leehyunjae"
+tags: ["encoding"]
+---
+
+> 인코딩, 정규화에 대해 찾아본 내용 정리해보가
+
+<br>
+
+### 개요 
+
+(최근에 회사 업무 중에) 고객이 업로드한 파일 이름의 자모음이 분할되어 저장되는 문제가 있었다. Mac 환경의 클라이언트가 해당 기능을 사용할 때 한글이 분할되는 현상이었다.
+
+예를 들어, 클라이언트에서 `가나다라.jpg` 라는 파일을 업로드하면 `ㄱㅏㄴㅏㄷㅏㄹㅏ.jpg`의 이름으로 저장이 되었다.
+
+<br>
+
+### 문자코드표, 문자인코딩
+
+컴퓨터는 데이터를 **바이트**(혹은 **숫자**) 단위로 처리한다. 그러므로 '문자/글자'를 나타내려면 바이트/숫자 <--> 문자/글자를 매칭시켜줘야한다. 어떤 기준으로, 어떻게 매칭시켜야 할 지에 대해 규칙을 정해놓은 것들이 ASCII, Unicode, UTF-8, EUC-KR 등인 것이다. 
+
+> *이런 것들을 통틀어 인코딩 규약 이라고 한다..?*
+
+> *[위키백과](https://ko.wikipedia.org/wiki/인코딩){:target="_blank"}에서는 인코딩을 "정보의 형태나 형식을 변환하는 처리나 처리 방식" 라고 설명하고 있다.*
+
+<br>
+
+['문자 인코딩이란?'](https://vigli.tistory.com/52){:target="_blank"} 여기의 글을 읽었는데 단번에 이해되었다. 블로그의 글을 조금 요약해보면, 다음과 같다.
+
+- **문자코드표** : 인코딩할 때 사용되는 매칭표(코드표). 대표적으로는 ASCII코드표, Unicode표가 있음. 모든 곳에서 동일하게 사용하기 위해 만든 것.
+- **문자인코딩**: 문자코드표를 어떤 방식으로 변환할지에 대한 방법, 동일한 문자코드표를 사용해도 변환(처리)하는 방식이 다를 수 있음. 이유는 '효율성'을 위해서. 대표적으로 UTF-8, UTF-16, EUC-KR 등의 인코딩 방식이 있음.
+
+<br><br>
+
+### 문자코드표 (문자코드)
+
+**ASCII(American Standard Code for Information Interchange, 정보 교환을 위한 미국 표준 코드)**
+
+**(풀네임을 읽어보면) American Standard Code, 즉 영어(알파벳 + 일부 문자)를 위해 사용되는 표준 코드(표)이다.**
+
+7bits 표현 방식으로 알파벳, 숫자, 간단한 문장부호 등 128개의 글자를 나타낼 수 있다. (2^7 = 128) 알파벳(영어대소문자) 52개 + 숫자 10개 + 특수문자 33개 + 제어문자 33개로 총 128개이다. 이 중 printable 문자(출력 가능한 문자)는 알파벳, 숫자, 특수문자로 95개(32 ~ 126)이다. Non-printable 문자(출력 불가능한 문자)는 제어문자로 33개(0 ~ 31, 127)이다.
+
+<br>
+
+**Unicode**
+
+영어(ASCII)를 포함하여 전세계의 언어, 다양한 문구/부호를 표현하기 위해 사용되는 코드표이다.
+
+다양한 방식으로 구현이 가능하다. 대표적인 방식으로 `UTF-8`, `UTF-16`의 방법이 있다. (유니코드를 실제 파일 등에 어떻게 기록할 것인지를 표준화한 것이다. **유니코드는 문자를 각 숫자에 대응시킨 코드표에 불과하고 이를 실제 비트로 어떻게 표현할지에 대한 방법은 다양한 것이다.**)
+
+<br><br>
+
+### 문자인코딩
+
+**UTF-8 / UTF-16**
+
+`UTF-8` 1\~4 Bytes 를 사용한다. `UTF-16` 2\~4 Bytes 를 사용한다. 이렇게 여러가지 방식이 존재하는 이유는 앞서 말했듯이, **효율성**을 위함이다. 표현할 문자에 따라 1byte로 표현할 수도, 2~3byte로 표현할 수도 있다. 즉, 가변적인 것이다. 예들 들어, 서구권 언어(알파벳/ASCII 등)에서는 대부분의 문자를 1byte 만으로 표현할 수 있어서 `UTF-8` 을 사용하는 것이 효율적이지만, 아시아권의 문자(특히 한중일)를 나타낼 때는 `UTF-16` 을 사용할 때 더 효율적이다.
+
+> *\* UTF-8의 경우 ASCII 코드표와도 호환이 되며, 최근에 가장 많이 사용되는 인코딩 방식이다.*
+
+```text
+Text : 가
+Binary : 11101010 10110000 10000000
+UTF-8: \xEA\xB0\x80 (3byte)
+UTF-16 : \uac00 (2byte)
+```
+
+<br>
+
+**EUC-KR (Extended Unix Code - Korea)**
+
+한글 지원을 위해 사용되는 인코딩 방식이다. 2bytes 형태의 완성형 코드표를 매칭시킨다.
+
+<br>
+
+**CP949 (Code Page 949)**
+
+한글 지원을 위해 사용되는 인코딩 방식이다. EUC-KR (2bytes) 로 표현할 수 없는 문자를 표현하기 위해 MS사에서 개선/확장된 인코딩 방식이다. 따라서 EUC-KR 과 호환 가능하다. MS949라고 부르기도 한다고 한다.
+
+<br><br>
+
+### 유니코드 정규화 ?
+
+> *아래 블로그들에 정말 쉽고, 상세히 정리되어 있다.*
+> - *[\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37){:target="_blank"}*
+> - *[유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0){:target="_blank"}*
+
+다시 처음 문제였던 한글 자모음이 분리되는 문제로 돌아와서, 이 문제는 뭐일까 검색해보니 **'유니코드 정규화'** 라는 키워드에 대해 알 수 있었다.
+
+유니코드에서 '결합문자' 라는 개념이 있다. 예를 들어 'a'라는 문자와 'e'라는 문자를 결합해서 'ae'의 하나의 문자가 되는 것이 결합문자이다. 근데 이 결합문자를 만들 떄에도 어떻게 만들지에 대한 방법/방식이 4개가 있다. <u>이 방식을 정규화(normalization)라고 한다.</u> 인코딩 방식이 다르면 문자가 깨지는 것 처럼, 정규화 방식이 다르면 의도하지 않은 문자로 보이게 되는 것이다.
+
+> *정규화는 문자열을 분해/결합 + 정준/호환 의 방법이 조합되어 4가지 방법이 있다고 한다. (간단하게 말하면 어떻게 분해하고 어떻게 결합할 건지에 대한 방법인 것이다.)*
+
+> *유니코드는 텍스트를 한 가지 규칙을 이용하여 정규화하여 저장하는 것을 권장한다고 한다.*
+
+정규화 규칙에는 아래 4개의 방식이 존재한다.
+
+- <u>NFC: Normalization Form Canonical Composition : 모든 글자를 분해한 후에, (표준에 명시된 순서에 따라) 다시 합치는 방식이다. 다만, 옛 한글 자모의 결합은 결합하지 못한다. NFC는 많은 GNU/Linux 시스템, Windows에서 주로 사용한다.</u>
+- <u>NFD: Normalization Form Canonical Decomposition : 모든 글자를 분해하여 저장한다. NFD는 macOS 시스템에서 주로 사용한다.</u>
+- NFKC: Normalization Form Compatibility Composition
+- NFKD: Normalization Form Compatibility Decomposition
+ 
+> *NFKC와 NFKD는 한글자모/한글음절 영역 이외의 한글 유니코드 영역을 처리할 때 유용하게 사용할 수 있다고 한다.*
+
+<br><br>
+### 결론
+
+**결론적으로 Mac OS 와 Windows/Linux 환경에서 사용하는 정규화 방식이 다르기 때문에 한글 자모음이 분리되어 보여지는 현상이 나타난다.** 
+
+> PHP 에서는 이 정규화 방식에 대해 처리할 수 있는 ['Normalizer 클래스'](https://www.php.net/manual/en/normalizer.normalize.php){:target="_blank"}를 제공한다. 
+
+
+<br><br>
+
+### 참고
+
+- [ASCII Wiki](https://ko.wikipedia.org/wiki/ASCII){:target="_blank"}
+- [한글과 유니코드](https://gist.github.com/Pusnow/aa865fa21f9557fa58d691a8b79f8a6d){:target="_blank"}
+- [ASCII & Unicode (아스키코드와 유니코드)](https://velog.io/@kim-jaemin420/ASCII-Unicode-아스키코드와-유니코드){:target="_blank"}
+- [문자열 인코딩 개념 정리(ASCII/ANSI/EUC-KR/CP949/UTF-8/UNICODE)](https://onlywis.tistory.com/2){:target="_blank"}
+- [UNICODE 특장점, 유니코드 변환 방식(UTF-8과 UTF-16 특장점, 비교, 표현방법) / 한글 유니코드](https://mk28.tistory.com/186){:target="_blank"}
+- [\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37){:target="_blank"}
+- [유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0){:target="_blank"}
