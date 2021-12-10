@@ -87,6 +87,24 @@ DispatcherServlet 에서 요청에 대한 Controller 를 찾을 수 없는 경�
 
 <br><br>
 
+### 코드로 살펴보기
+
+```java
+public class DispatcherServlet extends FrameworkServlet {
+}
+
+public abstract class FrameworkServlet extends HttpServletBean implements ApplicationContextAware {
+}
+
+public abstract class HttpServletBean extends HttpServlet implements EnvironmentCapable, EnvironmentAware {
+}
+```
+
+
+
+
+<br><br>
+
 >Reference
 >1. https://medium.com/@fntldpf12/dispatcher-servlet%EC%9D%B4%EB%9E%80-624a2195d38f
 > 2. https://velog.io/@seculoper235/2.-DispatcherServlet-%EC%9D%B4%EB%9E%80
