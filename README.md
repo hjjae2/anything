@@ -1,1 +1,1 @@
-[JAVA](./tree/main/java)
+[JAVA](java)
