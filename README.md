@@ -1,1 +1,1 @@
-hard :fire:
+[JAVA](/Java)
