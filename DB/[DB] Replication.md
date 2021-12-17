@@ -9,13 +9,12 @@ tags: ["db"]
 
 ### Replication
 
-회사에서 대용량의, 중요한 테이블에 대한 스키마 변경 작업을 하게 되었다. 작업을 진행하기 전 Replication 에 대한 개념이 부족하여 replication 에 대해 공부해보고 정리해보고자 한다.
+> 회사에서 대용량의, 중요한 테이블에 대한 스키마 변경 작업을 하게 되었다. 작업을 진행하기 전 Replication 에 대한 개념이 부족하여 replication 에 대해 공부해보고 정리해보고자 한다.
 
-Replication 은 말그대로 '복제'이다. DB에 데이터를 insert, update, delete 하면 그 내용을 그대로 (여분의, 추가의)DB에 저장해놓는 것이다. 백업을 생각하면 이해하기 쉬운 것 같다. 위의 문장에서 insert, update, delete 하는 DB를 master DB라고 하고, 여분의 DB를 slave DB라고 부른다. 단, insert, update, delete 하는 DB가 꼭 master DB인 것은 아니다. 메인이 되는 것과 서브가 되는 DB를 생각하면 될 것 같다.
-
-아무튼 한 문장으로 정리하면 **'master DB의 내용이 slave DB에 똑같이 복제가 되는 것'**이다.
+Replication 은 말그대로 '복제'이다. DB에 데이터를 insert, update, delete 하면 그 내용을 그대로 (여분의, 추가의)DB에 저장해놓는 것이다.
 
 이렇게 복제된 DB는 백업용으로 사용할 수도 있고, select query를 처리해줄 수도 있다. 예를 들어, select query를 slave DB에 위임하면 메인 DB의 부하를 감소시킬 수 있을 것이다.
+보통의 경우 (성능을 고려하여)master DB에 insert, update, delete 동작을 실행하고, slace DB에 select 쿼리를 질의한다고 한다. 
 
 <br>
 
