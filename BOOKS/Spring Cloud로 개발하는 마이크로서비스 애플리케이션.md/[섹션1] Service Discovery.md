@@ -84,4 +84,4 @@ eureka:
 
 <br>
 
-<img src="/images/inflearn/springclodegateway/eureka_sample.png" width="100%" height="100%" alt="OSIV">
+<img src="/images/inflearn/springclodegateway/eureka_sample.png" width="100%" height="100%">

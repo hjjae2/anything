@@ -1,10 +1,3 @@
----
-layout: post
-title:  "SpringCloudGateway :: Spring Cloud Config"
-author: "leehyunjae"
-tags: ["spring"]
----
-
 서버, 클라이언트 구성에 필요한 설정 정보(application.yml)를 외부 시스템에서 관리할 수 있다. 
 
 하나의 중앙화 된 저장소(GIT Repository, Secure Valut, Secure File Storage 등)에서 관리할 수 있다.
