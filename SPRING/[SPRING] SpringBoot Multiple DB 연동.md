@@ -11,19 +11,18 @@ tags: ["springboot", "java"]
 
 ### 개요
 
-회사에서 새로운 프로젝트를 SpringBoot 환경으로 진행하게 되었다. 기존의 대부분의 프로젝트는 PHP 진영의 CodeIgniter(이하 CI) 라는 프레임워크가 사용되어왔다. SpringBoot로 컨버팅하는 작업도 일부 포함되어 있었기에, 이것저것 알아봐야하는 것들이 많았다.
+> 회사에서 새로운 프로젝트를 SpringBoot 환경으로 진행하게 되었다. 기존의 대부분의 프로젝트는 PHP 진영의 CodeIgniter(이하 CI) 라는 프레임워크가 사용되어왔다. SpringBoot로 컨버팅하는 작업도 일부 포함되어 있었기에, 이것저것 알아봐야하는 것들이 많았다.<br><br>
+> 그 중에 가장 처음 직면한 문제는 <u>`DB 연동` 문제</u>였다. 우리 팀은 기본적으로 Oracle DB를 베이스로 하는데, 몇몇 프로젝트에서는 Mysql 을 사용한 프로젝트도 있었다. 문제는 이번에 작업해야 할 프로젝트가 <u>Oracle, Mysql DB를 둘 다 연동/사용해야 했다.</u>
 
-그 중에 가장 처음 직면한 문제는 <u>`DB 연동` 문제</u>였다. 우리 팀은 기본적으로 Oracle DB를 베이스로 하는데, 몇몇 프로젝트에서는 Mysql 을 사용한 프로젝트도 있었다. 문제는 이번에 작업해야 할 프로젝트가 <u>Oracle, Mysql DB를 둘 다 연동/사용해야 했다.</u>
+여러 개의 DB 를 연결하기 위해 찾아본 내용을 정리해보고자 한다.
 
-이번 글에서는 여러 개의 DB 를 연결하기 위해 찾아본 내용을 정리해보려고 한다.
-
-<br>
+<br><br>
 
 ### 설정
 
 **여러 개의 DB 연결 시, 참고해야 할 것은 다음과 같다.**
 
-**1. 수동으로 설정해주어야 한다!**<br>
+**1. Java 코드(클래스)로 설정해준다.**<br>
  단일 DB 연동시에는 `application.yml`, `application.properties` 의 설정을 통해 자동으로 연결해왔다면, 여러 개의 DB 연동시에는 수동으로 설정해줘야하는 부분이 있다. 예를 들어, 아래와 같은 것들을 설정해주어야 한다.
  - Target package 설정, Entity 설정
  - DB(Datasource) 설정
@@ -37,7 +36,7 @@ tags: ["springboot", "java"]
 **application.yml 예시**
 
 ```yaml
-// 기존(단일 DB 연동 시)
+// 단일 DB 연동 시, 아래와 같은 형태로 쉽게 연결할 수 있다.
 
 spring:
   datasource:
@@ -56,7 +55,8 @@ spring:
 <br>
 
 ```yaml
-// 변경(여러 개의 DB 연동 시)
+// 여러 개의 DB 연동 시, Java 코드로 설정할 것이기에 spring.datasource 를 통한 설정/연결을 사용하지 않는다고 보면 된다. 
+// 그렇기에 자유로운 key 값으로 config 관련 값을 적어놓는다.
 
 datasource:
   mysql:
@@ -77,14 +77,11 @@ datasource:
     ...
 ```
 
-앞서 말한 것 처럼, 위의 `spring.datasource` 를 통한 설정/연결을 사용하지 않는다고 보면 된다. 그렇기에 자유로운 key 값으로 config 관련 값을 적어놓는다.
+<br><br>
 
-<br>
-
-**Java configuration 설정**
+### Java Configuration 설정
 
 ```java
-{% raw %}
 @RequiredArgsConstructor
 @EnableJpaRepositories(
         entityManagerFactoryRef = "firstEntityManager",
@@ -130,7 +127,6 @@ public class FirstJpaConfiguration extends HikariConfig {
         return transactionManager;
     }
 }
-{% endraw %}
 ```
 
 <br>
@@ -145,12 +141,11 @@ public class FirstJpaConfiguration extends HikariConfig {
         return new LazyConnectionDataSourceProxy(new HikariDataSource(this));
     }
 ```
-첫 번째로는 연결할 DB(DataSource) Bean 을 생성(설정)하는 것이다. (DataSource Bean 을 생성하는 다른 방법도 있다.)
+첫 번째로는 연결할 DB(DataSource) Bean 을 생성/설정한다.
 
 <br>
 
 ```java
-{% raw %}
     ...
 
     @Bean
@@ -167,10 +162,9 @@ public class FirstJpaConfiguration extends HikariConfig {
 
         return entityManagerFactoryBean;
     }
-{% endraw %}
 ```
 
-두 번째로는 JPA 관련 설정(EntityManager)을 하는 것이다. DB(DataSource), PacagesToScan, JpaVendor(Hibernate), 이 외 JPA 관련 설정 등을 설정해준다.
+두 번째로는 JPA 관련 설정(EntityManager)을 해준다. DB(DataSource), PacagesToScan, JpaVendor(Hibernate), 이 외 JPA 관련 설정 등을 설정해준다.
 
 <br>
 
@@ -187,15 +181,11 @@ public class FirstJpaConfiguration extends HikariConfig {
     }
 ```
 
-세 번째로는 TransactionManager 를 설정해주는 것이다. TransactionManager 는 트랜잭션 관리를 위한 객체라고 보면된다. 
+세 번째로는 TransactionManager 를 설정해준다. TransactionManager 는 트랜잭션 관리를 위한 객체라고 보면된다. 
 
-> *" 데이타가 문제가 없다면 Commit 을 통해 데이타를 영속화 시키고, 문제가 발생된다면 Rollback 을 통해 트랜잭션의 원자성을 보장해 주는 역할을 담당합니다. "*
-
-즉, 이 객체가 설정되어야 정상적으로 트랜잭션이 관리된다는 것이다. (`@Transactional` 이라는 어노테이션을 많이 사용하는데, 이 어노테이션이 적용되어 있는 부분에 대해서 TransactionManager 가 관리해주고 있는 것이다.)
+즉, 이 객체가 설정되어야 정상적으로 트랜잭션이 관리된다. (`@Transactional` 이라는 어노테이션을 많이 사용하는데, 이 어노테이션이 적용되어 있는 부분에 대해서 TransactionManager 가 관리해주고 있는 것이다.)
 
 원래 Spring의 기본 TransactionManager는 DataSourceTransactionManager(구현체)를 사용한다고 한다. 우리는 JPA를 사용할 것이기 때문에 JpaTransactionManager(구현체)를 사용한다.
-
-> *" TransactionManager 인 DataSourceTransactionManager 구현체를 사용하지 않고 JpaTransactionManager 구현체를 사용한다는 점입니다. "*
 
 <br>
 
