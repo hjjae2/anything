@@ -78,3 +78,5 @@ Nginx 의 처리 방식은 `비동기 event-dirven` 방식이다.
 > 3. [Nginx와 Apache의 구동방식 비교](https://taes-k.github.io/2019/03/08/server-nginx-event-driven/)
 > 4. [넌 뭐니 NGINX?](https://medium.com/sjk5766/%EB%84%8C-%EB%AD%90%EB%8B%88-nginx-9a8cae25e964)
 > 5. [Nginx 개념의 이해](https://kbs4674.tistory.com/126)
+> 6. [NGINX와 Apache](https://eminentstar.tistory.com/74)
+> 7. [Nginx 개념의 이해](https://kbs4674.tistory.com/126)

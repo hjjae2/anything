@@ -72,7 +72,7 @@
 <br>
 
 **해결책 2**
-- 모든 요청을 컨트롤러에 등록한다. 
+- 모든 요청을 컨트롤러에 등록한다.
 
 무식한 방법이라고 한다.
 
@@ -90,9 +90,18 @@ DispatcherServlet 에서 요청에 대한 Controller 를 찾을 수 없는 경�
 ### 코드로 살펴보기
 
 ```java
+/**
+Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers or HTTP-based remote service exporters. 
+Dispatches to registered handlers for processing a web request, providing convenient mapping and exception handling facilities.
+*/
 public class DispatcherServlet extends FrameworkServlet {
 }
 
+
+/**
+Base servlet for Spring's web framework.
+Provides integration with a Spring application context, in a JavaBean-based overall solution.
+*/
 public abstract class FrameworkServlet extends HttpServletBean implements ApplicationContextAware {
 }
 
