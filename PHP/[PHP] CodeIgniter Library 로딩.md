@@ -13,9 +13,11 @@ tags: ["codeigniter", "php"]
 
 회사에서 PHP 프레임워크 CodeIgniter(2.x, 3.x)를 사용하고 있다. 
 
-CodeIgniter는 MVC 패턴으로, 대부분이 그렇듯 controller 는 client 의 요청을 받고, view 는 화면 노출을 위해 사용되며 model 은 DB I/O 역할을 수행한다. 여기에 추가로 library 라는 개념(디렉터리 구조에 포함)이 있다. Library 는 말그대로 공통으로 사용될 기능들에 대한 클래스(library)를 만들어두고 사용하기 위해 존재한다.
+CodeIgniter는 MVC 패턴으로, 대부분이 그렇듯 controller 는 client 의 요청을 받고, view 는 화면 노출을 위해 사용되며 model 은 DB I/O 역할을 수행한다.
 
-또, CodeIgniter 는 기본적으로 싱글톤 패턴으로 동작한다.
+<br>
+
+여기에 추가로 library 라는 개념(디렉터리 구조에 포함)이 있다. Library 는 말그대로 공통으로 사용될 기능들에 대한 클래스(library)를 만들어두고 사용하기 위해 존재한다.
 
 <br>
 
@@ -45,7 +47,7 @@ $this->github->pull();
 
 프로젝트마다 컨벤션(camelCase, snake_case)이 조금씩 다르다. 그래서 종종 alias 를 걸어 사용하곤 했다.
 
-<br>
+<br><br>
 
 ### 문제
 
@@ -71,9 +73,7 @@ $this->github_library->pull(); // <-- 오류(Null) 발생
 
 `A class` 에서 `github_library`에 alias 를 걸어 사용했고, 이후에 동작한 `B class` 에서는 alias 를 걸지 않은 상태였다. 그런데 `B class` 에서 load 한 `github_library`를 null 로 인식하고 오류를 발생시켰다. 
 
-파일명을 잘못 작성한건지, 오타를 낸건지, 실수한 부분이 있는 줄 알고 한참을 헤맸다. 그러다 혹시나해서 `B class`에서 `$this->github->pull()` 과 같이 작성하고 동작시켜봤는데, 잘 동작했다.
-
-> ...?
+파일명을 잘못 작성한건지, 오타를 낸건지, 실수한 부분이 있는 줄 알고 한참을 확인했다. 그러다 혹시나해서 `B class`에서 `$this->github->pull()` 과 같이 작성하고 동작시켜봤는데, 잘 동작했다.(...?)
 
 <br>
 
@@ -97,7 +97,7 @@ $this->load->library("github_library", $constructParameter, "github");
 $this->github->pull(); // 정상 동작!
 ```
 
-<br>
+<br><br>
 
 ### Codeigniter 에서는 libary 를 어떻게 load 할까?
 
@@ -242,7 +242,7 @@ protected function _ci_load_library($class, $params = NULL, $object_name = NULL)
                 $CI =& get_instance();
                 if ( ! isset($CI->$object_name))
                 {
-                    return $this->_ci_load_library($class, '', $params, $object_name);
+                    return $this->_ci_init_library($class, '', $params, $object_name);
                 }
             }
 
@@ -253,7 +253,7 @@ protected function _ci_load_library($class, $params = NULL, $object_name = NULL)
 
         include_once($filepath);
         $this->_ci_loaded_files[] = $filepath;
-        return $this->_ci_load_library($class, '', $params, $object_name);
+        return $this->_ci_init_library($class, '', $params, $object_name);
     }
 
     ...
@@ -329,14 +329,13 @@ print_r($this->lib_test->getHi()); // 정상!!
 DEBUG - 2021-07-19 21:43:24 --> ...
 ```
 
-<br>
+<br><br>
 
-### 어떻게 해야할까
+### 해결 방법
 
-(현재 상황에서) 그럼에도 alias 를 사용하려면 어떻게 해야할까 생각했다.
 
-**`core/Loader.php` 쪽의 코드를 수정하던지, 아니면 `alias` 를 사용하지 말던지.**
+1. `core/Loader.php` 쪽의 코드를 수정
+   - 현재 버전에서는 위와 같은 문제는 해결된 것으로 보여진다. ([GitHub](https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Loader.php#L1006))
 
-1. `core` 쪽의 코드는 말그대로 CodeIgniter 코어 역할을 하는 중요한 부분이다. core 파일의 변경은 프레임워크 전체에 영향을 미친다. 사실  윗 내용에 대한 수정은 큰 수정/영향 없이 수정할 수 있을 것이다.
-
-2. `alias` 를 사용하지 말자는 것은, 그냥 포기하는 것은 아니다. 사실 여태껏 작성되어 있는 코드의 대부분이 alias가 적용되어 있지 않기 때문에 오히려 alias 를 적용한 코드가 통일성을 깨고 있다고 생각했기 때문이다.
+2. `alias` 를 사용하지 않음<br>
+   - `alias` 를 사용하지 말자는 것은, 그냥 포기하는 것은 아니다. (사실)여태껏 작성되어 있는 코드의 대부분이 alias가 적용되어 있지 않기 때문에 오히려 alias 를 적용한 코드가 통일성을 깨고 있다고 생각했기 때문이다.
