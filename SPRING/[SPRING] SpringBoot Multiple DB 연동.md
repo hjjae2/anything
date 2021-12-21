@@ -55,8 +55,7 @@ spring:
 <br>
 
 ```yaml
-// 여러 개의 DB 연동 시, Java 코드로 설정할 것이기에 spring.datasource 를 통한 설정/연결을 사용하지 않는다고 보면 된다. 
-// 그렇기에 자유로운 key 값으로 config 관련 값을 적어놓는다.
+// 여러 개의 DB 연동 시, Java 코드로 설정할 것이기에 spring.datasource 를 통한 설정/연결을 사용하지 않는다고 보면 된다.
 
 datasource:
   mysql:

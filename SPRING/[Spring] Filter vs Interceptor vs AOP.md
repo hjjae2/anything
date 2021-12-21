@@ -1,38 +1,12 @@
-## Filter vs Interceptor vs AOP
-
-로직을 작성하다보면, 핵심 관심사(핵심 로직) 와 주변 관심사(종단 관심사) 가 나뉜다.
-
-예를 들어 아래와 같은 상황이 있다.
-
-- Service A 에서는 'A' 라는 기능이 핵심 관심사이고, '로깅' 이 종단 관심사이다.
-- Service B 에서는 'B' 라는 기능이 핵심 관심사이고, '로깅' 이 종단 관심사이다.
-- Service C 에서는 'C' 라는 기능이 핵심 관심사이고, '로깅' 이 종단 관심사이다.
-
-이 상황에서 '로깅' 이라는 기능은 주변 관심사(종단 관심사)이다. 즉, 주변 관심사는 중복적으로 코드를 작성해주어야 한다.
-
-이것들을 따로 처리/관리하기 위한 방법(기술)이다.
-
-1. Filter
-2. Interceptor
-3. AOP
-
-<br>
-
 ### Filter
 
 요청 / 응답을 필터링한다.
 
-DispatcherServlet 이전에 실행 된다.
+DispatcherServlet 이전에 실행 된다. 즉, 스프링 영역 외부에 존재하여, 스프링과 무관한 자원에 대해 동작한다.
 
-일반적으로 web.xml 에 등록하여 사용한다. Servlet-name 매핑, url 매핑을 기술할 수 있다. (Ex. "A라는 filter 를 Servlet A에 적용한다.") (**이미지와 같은 모든 자원의 요청에도 호출될 수 있다.**)
-
-스프링 영역 외부에 존재하여, 스프링과 무관한 자원에 대해 동작한다.
-
-Servlet 단위에서 실행된다.
-
-- init()
-- doFilter()
-- destroy()
+- init() : ServletContainer 에 Filter 가 등록되어 초기화될 때 실행
+- doFilter() : Filter가 적용된 servlet에 요청이 들어왔을 때 실행 (servlet에 전달하기 전에)
+- destroy() : ServletContainer 가 종료될 때(Filter 가 삭제될 때)실행
 
 일반적으로 Encoding 처리, XSS 방어 등을 처리하기 위해 사용될 수 있다.
 
@@ -40,7 +14,7 @@ Servlet 단위에서 실행된다.
 
 ### Interceptor
 
-요청에 대한 작업 전/후로 요청/응답을 가로챈다.
+요청/응답에 대해 전(pre)/후(post)로 가로챈다.
 
 DispatcherServlet 이 Controller 를 호출하기 전/후로 가로챈다.
 - DispatcherServlet -> Handler Mapping -> **Interceptor** -> Controller(Handler)
