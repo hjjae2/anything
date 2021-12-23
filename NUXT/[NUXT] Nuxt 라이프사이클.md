@@ -1,4 +1,4 @@
-## Nuxt Life-cycle
+### Nuxt LifeCycle
 
 1. Nuxt ServerInit (lifecycle hook 호출)
 2. Route Middleware

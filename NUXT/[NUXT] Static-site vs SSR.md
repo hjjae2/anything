@@ -1,6 +1,6 @@
-## Static-site vs SSR
+## Static-Site vs SSR (in Nuxt)
 
-### Static-site
+### Static-Site
 
 빌드 시에 완벽한 HMTL 페이지를 생성한다.
 

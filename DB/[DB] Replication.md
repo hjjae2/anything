@@ -1,10 +1,3 @@
----
-layout: post
-title: "DB :: Replication"
-author: "leehyunjae"
-tags: ["db"]
----
-
 > Replication 에 대해 이해해보기
 
 ### Replication

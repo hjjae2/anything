@@ -1,25 +1,16 @@
----
-layout: post
-title:  "인코딩? 정규화?"
-author: "leehyunjae"
-tags: ["encoding"]
----
-
-> 인코딩, 정규화에 대해 찾아본 내용 정리해보가
-
-<br>
-
 ### 개요 
 
 (최근에 회사 업무 중에) 고객이 업로드한 파일 이름의 자모음이 분할되어 저장되는 문제가 있었다. Mac 환경의 클라이언트가 해당 기능을 사용할 때 한글이 분할되는 현상이었다.
 
 예를 들어, 클라이언트에서 `가나다라.jpg` 라는 파일을 업로드하면 `ㄱㅏㄴㅏㄷㅏㄹㅏ.jpg`의 이름으로 저장이 되었다.
 
-<br>
+관련된 내용을 찾아보니 **인코딩, 정규화**와 같은 키워드로 많은 내용이 있었다. 이것들을 읽고 내용을 정리해보고자 한다!
+
+<br><br>
 
 ### 문자코드표, 문자인코딩
 
-컴퓨터는 데이터를 **바이트**(혹은 **숫자**) 단위로 처리한다. 그러므로 '문자/글자'를 나타내려면 바이트/숫자 <--> 문자/글자를 매칭시켜줘야한다. 어떤 기준으로, 어떻게 매칭시켜야 할 지에 대해 규칙을 정해놓은 것들이 ASCII, Unicode, UTF-8, EUC-KR 등인 것이다. 
+컴퓨터는 데이터를 **바이트(혹은 숫자**) 단위로 처리한다. 그러므로 '문자/글자'를 나타내려면 바이트/숫자 <--> 문자/글자를 매칭시켜줘야한다. 어떤 기준으로, 어떻게 매칭시켜야 할 지에 대해 규칙을 정해놓은 것들이 ASCII, Unicode, UTF-8, EUC-KR 등인 것이다. 
 
 > *이런 것들을 통틀어 인코딩 규약 이라고 한다..?*
 
@@ -27,12 +18,12 @@ tags: ["encoding"]
 
 <br>
 
-['문자 인코딩이란?'](https://vigli.tistory.com/52){:target="_blank"} 여기의 글을 읽었는데 단번에 이해되었다. 블로그의 글을 조금 요약해보면, 다음과 같다.
+['문자 인코딩이란?'](https://vigli.tistory.com/52) 여기의 글을 읽었는데 단번에 이해되었다. 블로그의 글을 조금 요약해보면, 다음과 같다.
 
 - **문자코드표** : 인코딩할 때 사용되는 매칭표(코드표). 대표적으로는 ASCII코드표, Unicode표가 있음. 모든 곳에서 동일하게 사용하기 위해 만든 것.
 - **문자인코딩**: 문자코드표를 어떤 방식으로 변환할지에 대한 방법, 동일한 문자코드표를 사용해도 변환(처리)하는 방식이 다를 수 있음. 이유는 '효율성'을 위해서. 대표적으로 UTF-8, UTF-16, EUC-KR 등의 인코딩 방식이 있음.
 
-<br><br>
+<br>
 
 ### 문자코드표 (문자코드)
 
@@ -84,12 +75,12 @@ UTF-16 : \uac00 (2byte)
 ### 유니코드 정규화 ?
 
 > *아래 블로그들에 정말 쉽고, 상세히 정리되어 있다.*
-> - *[\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37){:target="_blank"}*
-> - *[유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0){:target="_blank"}*
+> - *[\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37)*
+> - *[유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)*
 
 다시 처음 문제였던 한글 자모음이 분리되는 문제로 돌아와서, 이 문제는 뭐일까 검색해보니 **'유니코드 정규화'** 라는 키워드에 대해 알 수 있었다.
 
-유니코드에서 '결합문자' 라는 개념이 있다. 예를 들어 'a'라는 문자와 'e'라는 문자를 결합해서 'ae'의 하나의 문자가 되는 것이 결합문자이다. 근데 이 결합문자를 만들 떄에도 어떻게 만들지에 대한 방법/방식이 4개가 있다. <u>이 방식을 정규화(normalization)라고 한다.</u> 인코딩 방식이 다르면 문자가 깨지는 것 처럼, 정규화 방식이 다르면 의도하지 않은 문자로 보이게 되는 것이다.
+유니코드에서 '결합문자' 라는 개념이 있다. 예를 들어 'a'라는 문자와 'e'라는 문자를 결합해서 'ae'의 하나의 문자가 되는 것이 결합문자이다. 근데 이 결합문자를 만들 때에도 어떻게 만들지에 대한 방법/방식이 4개가 있다. <u>이 방식을 정규화(normalization)라고 한다.</u> 인코딩 방식이 다르면 문자가 깨지는 것 처럼, 정규화 방식이 다르면 의도하지 않은 문자로 보이게 되는 것이다.
 
 > *정규화는 문자열을 분해/결합 + 정준/호환 의 방법이 조합되어 4가지 방법이 있다고 한다. (간단하게 말하면 어떻게 분해하고 어떻게 결합할 건지에 대한 방법인 것이다.)*
 
@@ -109,17 +100,17 @@ UTF-16 : \uac00 (2byte)
 
 **결론적으로 Mac OS 와 Windows/Linux 환경에서 사용하는 정규화 방식이 다르기 때문에 한글 자모음이 분리되어 보여지는 현상이 나타난다.** 
 
-> PHP 에서는 이 정규화 방식에 대해 처리할 수 있는 ['Normalizer 클래스'](https://www.php.net/manual/en/normalizer.normalize.php){:target="_blank"}를 제공한다. 
+> PHP 에서는 이 정규화 방식에 대해 처리할 수 있는 ['Normalizer 클래스'](https://www.php.net/manual/en/normalizer.normalize.php)를 제공한다. 
 
 
 <br><br>
 
 ### 참고
 
-- [ASCII Wiki](https://ko.wikipedia.org/wiki/ASCII){:target="_blank"}
-- [한글과 유니코드](https://gist.github.com/Pusnow/aa865fa21f9557fa58d691a8b79f8a6d){:target="_blank"}
-- [ASCII & Unicode (아스키코드와 유니코드)](https://velog.io/@kim-jaemin420/ASCII-Unicode-아스키코드와-유니코드){:target="_blank"}
-- [문자열 인코딩 개념 정리(ASCII/ANSI/EUC-KR/CP949/UTF-8/UNICODE)](https://onlywis.tistory.com/2){:target="_blank"}
-- [UNICODE 특장점, 유니코드 변환 방식(UTF-8과 UTF-16 특장점, 비교, 표현방법) / 한글 유니코드](https://mk28.tistory.com/186){:target="_blank"}
-- [\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37){:target="_blank"}
-- [유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0){:target="_blank"}
+- [ASCII Wiki](https://ko.wikipedia.org/wiki/ASCII)
+- [한글과 유니코드](https://gist.github.com/Pusnow/aa865fa21f9557fa58d691a8b79f8a6d)
+- [ASCII & Unicode (아스키코드와 유니코드)](https://velog.io/@kim-jaemin420/ASCII-Unicode-아스키코드와-유니코드)
+- [문자열 인코딩 개념 정리(ASCII/ANSI/EUC-KR/CP949/UTF-8/UNICODE)](https://onlywis.tistory.com/2)
+- [UNICODE 특장점, 유니코드 변환 방식(UTF-8과 UTF-16 특장점, 비교, 표현방법) / 한글 유니코드](https://mk28.tistory.com/186)
+- [\[Unicode\] Unicode란? (문자세트, 인코딩, 코드 포인트, 평면, 정규화)](https://miaow-miaow.tistory.com/37)
+- [유니코드 문자열을 정규화 해야하는 이유](https://velog.io/@leejh3224/%EB%B2%88%EC%97%AD-%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%8A%B8%EB%A7%81%EC%9D%84-%EB%85%B8%EB%A9%80%EB%9D%BC%EC%9D%B4%EC%A7%95-%ED%95%B4%EC%95%BC%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)

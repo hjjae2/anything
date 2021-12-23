@@ -5,14 +5,17 @@ author: "leehyunjae"
 tags: ["db"]
 ---
 
-> 트리거 vs Application Logic 비교해보기
+> 트리거 vs Application Logic 비교해보기 
+> 
+> 인터넷들의 글/댓글들을 읽어 종합해본 내용입니다.
 
 
 <br>
 
 ### Trigger
 
-1. 개발자 입장에서 유지보수가 어렵다.
+1. 개발자 입장에서 유지보수가 어렵다.<br>
+   (반대로) 예전 글(2010년대 초반)을 보면 Trigger 가 유지보수가 더 쉽다는 의견/글들이 있는 것 같다.
 
 2. 빌드/배포 시간에 제약이 없다.
 
@@ -20,7 +23,7 @@ tags: ["db"]
 
 4. 성능(처리율, 속도) 우수하다.
 
-5. (한 액션 시 여러 개의 DB Table 에 삽입/수정 등이 이뤄질 때) Application Logic 으로 관리하면 Exception, Transaction 등을 신경써줘야 한다.
+5. (Application Logic 반대 의견) (한 액션 시 여러 개의 DB Table 에 삽입/수정 등이 이뤄질 때) Application Logic 으로 관리하면 Exception, Transaction 등을 신경써줘야 한다.
 
 <br>
 

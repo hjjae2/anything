@@ -16,7 +16,7 @@ Cross Site Request Forgery
 
 일반적으로 CSRF 방어 기법은 조회성 메소드(GET) 에는 적용하지 않고, POST, PUT, PATCH, DELETE 메소드에 중점적으로 적용한다.
 
-1. Referrer 검증
+**1. Referrer 검증**
 
 일반적으로 referrer 검증만으로 대부분의 CSRF 공격을 방어할 수 있다.
 
@@ -24,7 +24,9 @@ Cross Site Request Forgery
 
 XSS 취약점이 있다면, CSRF 공격에 취약해질 수 있다.
 
-2. CSRF Token 사용
+<br>
+
+**2. CSRF Token 사용**
 
 Security Token
 
@@ -32,8 +34,7 @@ Security Token
 
 예를 들어, 서버에서 임의의 토큰(난수 값)을 생성하고 (View)form 쪽에 csrf 토큰을 세팅하여 페이지를 내려준다. 정상적인 페이지라면 해당 토큰 값이 존재하고 유효하기 때문에 성공, 피싱 페이지라면 해당 토큰 값이 존재하지도 않을 수 있고 유효하지 않기 때문에 실패할 것이다.
 
-XSS 취약점이 있다면, CSRF 공격에 취약해질 수 있다.
-
-> Reference
-> 1. https://itstory.tk/entry/CSRF-%EA%B3%B5%EA%B2%A9%EC%9D%B4%EB%9E%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-CSRF-%EB%B0%A9%EC%96%B4-%EB%B0%A9%EB%B2%95
-> 2. https://sj602.github.io/2018/07/14/what-is-CSRF/
+<br><br>
+### 참고
+1. https://itstory.tk/entry/CSRF-%EA%B3%B5%EA%B2%A9%EC%9D%B4%EB%9E%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-CSRF-%EB%B0%A9%EC%96%B4-%EB%B0%A9%EB%B2%95
+2. https://sj602.github.io/2018/07/14/what-is-CSRF/

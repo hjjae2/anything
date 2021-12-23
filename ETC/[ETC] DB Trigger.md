@@ -78,8 +78,6 @@ CREATE OR REPLACE TRIGGER oracle_trigger
 ALTER TRIGGER 트리거명 [ENABLE|DISABLE]
 
 -- 테이블에 속한 트리거 활성화/비활성화
--- 트리거는 테이블에 종속,속하는게 아닌데 이것이 가능한건가??
--- 트리거가 가리키고 있는 대상 테이블에서 할 수 있는건가??
 ALTER TABLE 테이블명 [ENABLE|DISABLE] ALL TRIGGER
 
 -- 트리거 수정 후 재컴파일

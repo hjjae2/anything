@@ -1,7 +1,3 @@
-> 페이지 로딩 속도 개선한 경험 정리해보기
-
-<br>
-
 ### 개요
 
 고객이 메시지를 발송하면 그 기록을 관리툴에서 보여준다. 대략적으로 아래와 같이 생겼다.
@@ -100,7 +96,6 @@ where id = ?
     ...
     "key": "IDX_name",
     ...
-    "ref": "const",
     "rows": 2730685,
     "filtered": 0,
     "Extra": "Using index condition; Using where;"

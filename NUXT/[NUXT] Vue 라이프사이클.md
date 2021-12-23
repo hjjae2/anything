@@ -13,6 +13,8 @@
 11. **beforeDestroy**
 12. **destroyed**
 
+<br>
+
 ### beforeCreate()
 
 가장 먼저 실행되는 훅이다.
@@ -102,5 +104,6 @@ Vue 인스턴스에 정의된 모든 속성, 이벤트 등이 사라진다.
 
 <br>
 
-> Reference
-> 1. https://hyeooona825.tistory.com/40
+---
+### 참고
+1. https://hyeooona825.tistory.com/40

@@ -5,6 +5,8 @@ FTP 는 2개의 포트를 사용한다.
  - Data 포트: 주로 20번 포트를 사용하며, 데이터 전송 시에 사용되는 포트
 
  
+ <br>
+
 ### Active 모드
 
 1. Client -> Server: 연결 시도 (21번 포트)
@@ -16,6 +18,7 @@ FTP 는 2개의 포트를 사용한다.
 흔히, Client -> Server 로 연결을 시도하는 방식과 달리, Server -> Client 로 연결을 시도한다. (Active)
 (20번 포트에 대한 Server의 아웃바운드 규칙, Client의 인바운드 규칙의 설정이 필요하다.)
 
+<br>
 
 ### Passive 모드
 

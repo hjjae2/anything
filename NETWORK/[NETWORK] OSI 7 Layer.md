@@ -15,7 +15,7 @@ tags: ["network"]
 
 <img src="https://media.vlpt.us/images/cgotjh/post/52907c8c-c149-4943-ad21-3996f44f912f/995EFF355B74179035.jpg">
 
-<br>
+<br><br>
 
 **Application Layer (7 Layer)**
 
@@ -71,9 +71,9 @@ tags: ["network"]
 - 데이터의 전달만 한다. 알고리즘, 오류제어 등의 기능이 없다.
 - 장비 : Cable, Repeater, Hub
 
-<br>
+<br><br>
 
-수신자는 아래의 과정을 거친다고 한다.
+**수신자는 아래의 과정을 거친다고 한다.**
 
 1. Ethernet Frame Header 를 보고 목적지 MAC Address 가 자신이 맞는지 확인한다.
 2. IP Header 를 확인하여 목적지 IP 가 자신이 맞는지 확인한다.

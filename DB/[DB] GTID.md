@@ -1,9 +1,4 @@
----
-layout: post
-title: "DB :: GTID (with CTAS)"
-author: "leehyunjae"
-tags: ["db"]
----
+
 
 > GTID 에 대해 이해해보기
 
