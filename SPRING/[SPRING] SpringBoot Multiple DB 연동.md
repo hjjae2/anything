@@ -48,8 +48,8 @@ spring:
     properties:
       hibernate:
         ~~~
-    database: oracle
-    database-platform: org.hibernate.dialect.Oracle10gDialect
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
 <br>
