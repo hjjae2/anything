@@ -1,4 +1,4 @@
-> Okky `fender`, `jojoldu` 님의 글을 읽고 느껴지는 부분, 공감되는 부분에 대해서 정리하기
+> Okky `fender`, `jojoldu` 님의 글을 읽고 느껴지는 부분, 공감되는 부분에 대해서 정리해보기
 
 > [초보 개발자에게 권장하는 객체지향 모델링 공부 방법](https://okky.kr/article/358197)<br>
 > [객체지향 좀 더 이해하기 - 블랙잭 게임 구현(1)](https://jojoldu.tistory.com/62)
