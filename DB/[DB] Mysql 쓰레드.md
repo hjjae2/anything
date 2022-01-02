@@ -38,4 +38,4 @@ Disk 쓰기 작업은 Background Thread 가 책임집니다. Disk 쓰기 작업�
 - **Main thread** : 아래의 쓰레드를 관리하는 메인 쓰레드입니다.
 - **Log thread** : log 를 disk 에 기록합니다.
 - **Write thread** : Buffer의 데이터를 disk에 기록합니다.
-- ...
+- **Insert Buffer Merge Thread** : Inert 버퍼에 있는 내용을 병합합니다.
