@@ -17,9 +17,57 @@ SELECT MAX(ai_col) FROM table_name FOR UPDATE;
 1. 데이터에 `1, 2, 3, 4, 5` 라는 값을 넣는다.
    1. 이때 다음 auto_increment 값은 `6` 이다.
 2. 데이터 `5`를 지운다.
+
 3. 서버를 재시작한다.
-4. 데이터 `6`을 넣는다.
+4. 데이터 `6`을 넣는다. 
 5. 이때 다음 auto_increment 값 `5`가 된다.
+
+
+```sql
+mysql> select * from test;
++----+-------+
+| id | name  |
++----+-------+
+|  1 | name1 |
+|  2 | name2 |
+|  3 | name3 |
+|  4 | name4 |
+|  5 | name5 |
++----+-------+
+5 rows in set (0.01 sec)
+```
+```sql
+mysql> delete from test where id = '5';
+Query OK, 1 row affected (0.01 sec)
+
+
+mysql> select * from test;
++----+-------+
+| id | name  |
++----+-------+
+|  1 | name1 |
+|  2 | name2 |
+|  3 | name3 |
+|  4 | name4 |
++----+-------+
+4 rows in set (0.00 sec)
+```
+```sql
+mysql> insert into test(name) values('name6');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from test;
++----+-------+
+| id | name  |
++----+-------+
+|  1 | name1 |
+|  2 | name2 |
+|  3 | name3 |
+|  4 | name4 |
+|  5 | name6 |
++----+-------+
+5 rows in set (0.00 sec)
+```
 
 <br><br>
 
