@@ -39,11 +39,3 @@ https://docs.oracle.com/cd/E24693_01/server.11203/e10729/appunicode.htm#CACHBDGH
 
 \xF4[\x80-\x8F][\x80-\xBF]{2}
 ```
-
-<br>
-
-**예시**
-
-```java
-target.replaceAll("\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2}", "");
-```
