@@ -1,5 +1,7 @@
 ## Overview
 
+![Spring Security Authentication Architecture](https://user-images.githubusercontent.com/35790290/151847650-5846666b-6e94-4967-8d59-b8733882d00b.png)
+
 <br><br>
 
 ## [A Review Of Filters](https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-filters-review)
@@ -145,6 +147,7 @@ Security Filter 의 종류는 대표적으로 다음과 같은 것들이 있다.
 - BasicAuthenticationFilter
 - ...
 - ExceptionTranslationFilter
+- FilterSecurityInterceptor
 - ...
 
 <br><br>
