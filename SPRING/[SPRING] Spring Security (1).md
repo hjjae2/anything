@@ -14,7 +14,8 @@
 
 DelegatingFilterProxy 는 서블릿 컨테이너(Servet Conatiner)와 스프링 애플리케이션컨텍스트(ApplicationContext) 사이를 연결시켜주는(bridge) 역할을 한다.
 
-서블릿 컨테이너는 스프링에 등록된 Bean 들을 사용(인식)하지 않는다. 따라서, (서블릿 컨테이너 표준에 맞게 등록된) DelegatingFilterProxy가 스프링에 등록된 Bean(단, Fiter 구현체)에 위임한다.
+- 서블릿 컨테이너는 스프링에 등록된 Bean 들을 사용(인식)하지 않는다.
+- 따라서, (서블릿 컨테이너 표준에 맞게 등록된) DelegatingFilterProxy가 스프링에 등록된 Bean(단, Fiter 구현체)에 위임한다.
 
 > "(Servlet)Filter vs Bean Filter" 의 차이에 대해 이해할 것
 
@@ -58,13 +59,11 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 >
 > FilterChainProxy is a special Filter provided by Spring Security that allows delegating to many Filter instances through SecurityFilterChain
 
-(Spring Security에서)`DelegatingFilterProxy`가 security work를 위해 위임하는 Filter(Bean Filter)이다.
+- (Spring Security에서)`DelegatingFilterProxy`가 security work를 위해 위임하는 Filter(Bean Filter)이다.
 
-`FilterChainProxy`는 Spring Security를 지원하기 위해 사용된다.
+- `FilterChainProxy`는 Spring Security를 지원하기 위해 사용된다.
 
-FilterChainProxy가 `SecurityFilterChain`의 다양한 Filter에 (work를)위임한다.
-
-즉, 아래와 같다.
+- FilterChainProxy가 `SecurityFilterChain`의 다양한 Filter에 (work를)위임한다.
 
 
 <img src=https://docs.spring.io/spring-security/reference/_images/servlet/architecture/filterchainproxy.png>
@@ -214,7 +213,8 @@ private void handleSpringSecurityException(HttpServletRequest request, HttpServl
 - `AccessDeniedException` -> `accessDeniedHandler.handle()`
   
 
-그렇기에 AuthenticationEntryPoint, AccessDeniedHandler 를 재정의(상속)하여 커스텀하게 핸들링할 수 있다. (error response, redirect to entry point 등)
+그렇기에 AuthenticationEntryPoint, AccessDeniedHandler 를 재정의(상속)하여 커스텀하게 핸들링할 수 있다.<br>
+(error response, redirect to entry point 등)
 
 ```java
 ...
