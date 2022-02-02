@@ -12,38 +12,54 @@
 
 > package org.springframework.web.filter;
 
-DelegatingFilterProxy 는 서블릿 컨테이너(Servet Conatiner)와 스프링 애플리케이션컨텍스트(ApplicationContext) 사이를 연결시켜주는(bridge) 역할을 한다.
+서블릿 컨테이너(Servet Conatiner) <-> 스프링 애플리케이션컨텍스트(ApplicationContext) 사이를 연결시켜주는(bridge) 역할을 한다.<br>
+ 1. WebApplicationContext 에서 위임할 Filter(Bean)을 찾고, <br>
+ 2. 해당 Filter 의 `doFilter()` 메서드를 호출한다.
 
-- 서블릿 컨테이너는 스프링에 등록된 Bean 들을 사용(인식)하지 않는다.
-- 따라서, (서블릿 컨테이너 표준에 맞게 등록된) DelegatingFilterProxy가 스프링에 등록된 Bean(단, Fiter 구현체)에 위임한다.
+  - '서블릿 컨테이너' 는 '스프링에 등록된 Bean' 들을 사용(인식)하지 않는다.
+  - 따라서, (서블릿 컨테이너 표준에 맞게 등록된) DelegatingFilterProxy가 스프링에 등록된 Bean(단, Fiter 구현체)에 위임한다.
 
 > "(Servlet)Filter vs Bean Filter" 의 차이에 대해 이해할 것
 
 <br>
 
 ```java
-@Override
-public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+public class DelegatingFilterProxy extends GenericFilterBean {
+	...
 
-	// Lazily initialize the delegate if necessary.
-	Filter delegateToUse = this.delegate;
-	if (delegateToUse == null) {
-		synchronized (this.delegateMonitor) {
-			delegateToUse = this.delegate;
-			if (delegateToUse == null) {
-				WebApplicationContext wac = findWebApplicationContext();
-				if (wac == null) {
-					throw new IllegalStateException("No WebApplicationContext found: " +
+	// [NOTE] WebApplicationContext 를 가지고 있다.
+	private WebApplicationContext webApplicationContext;
+	
+	...
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		// Lazily initialize the delegate if necessary.
+		Filter delegateToUse = this.delegate;
+		if (delegateToUse == null) {
+			synchronized (this.delegateMonitor) {
+				delegateToUse = this.delegate;
+				if (delegateToUse == null) {
+					WebApplicationContext wac = findWebApplicationContext();
+					if (wac == null) {
+						throw new IllegalStateException("No WebApplicationContext found: " +
 							"no ContextLoaderListener or DispatcherServlet registered?");
+					}
+					delegateToUse = initDelegate(wac); // [NOTE] WebApplicationContext 로 부터 위임할 Filter 를 가져온다(찾는다).
 				}
-				delegateToUse = initDelegate(wac); // WebApplicationContext 로 부터 위임할 Filter 를 가져온다(찾는다).
+				this.delegate = delegateToUse;
 			}
-			this.delegate = delegateToUse;
 		}
+
+		// Let the delegate perform the actual doFilter operation.
+		invokeDelegate(delegateToUse, request, response, filterChain); // [NOTE] work를 위임한다.
 	}
 
-	// Let the delegate perform the actual doFilter operation.
-	invokeDelegate(delegateToUse, request, response, filterChain); // work를 위임한다.
+	...
+
+	protected void invokeDelegate(Filter delegate, ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		delegate.doFilter(request, response, filterChain);
+	}
 }
 ```
 
@@ -59,11 +75,9 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 >
 > FilterChainProxy is a special Filter provided by Spring Security that allows delegating to many Filter instances through SecurityFilterChain
 
-- (Spring Security에서)`DelegatingFilterProxy`가 security work를 위해 위임하는 Filter(Bean Filter)이다.
-
 - `FilterChainProxy`는 Spring Security를 지원하기 위해 사용된다.
 
-- FilterChainProxy가 `SecurityFilterChain`의 다양한 Filter에 (work를)위임한다.
+- `FilterChainProxy`가 `SecurityFilterChain`의 다양한 Filter에 (work를)위임한다.
 
 
 <img src=https://docs.spring.io/spring-security/reference/_images/servlet/architecture/filterchainproxy.png>
@@ -122,7 +136,7 @@ private void doFilterInternal(ServletRequest request, ServletResponse response, 
 <br>
 <br>
 
-(In SecurityFilterChain)Security Fiter 들은 (DelegatingFilterProxy가 아닌)FilterChainProxy에 등록(관리)된다.
+(In SecurityFilterChain)Security Filter 들은 (DelegatingFilterProxy가 아닌)FilterChainProxy에 관리된다.
 
 이를 통해 얻는 이점은 다음과 같은 것들이 있다.
 
@@ -153,7 +167,7 @@ Security Filter 의 종류는 대표적으로 다음과 같은 것들이 있다.
 
 ## [Handling Security Exceptions](https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters)
 
-`ExceptionTranslationFilter`는 AccessDeniedException / AuthenticationException 을 HTTP Response 로 변환한다.
+**`ExceptionTranslationFilter`는 AccessDeniedException / AuthenticationException 을 HTTP Response 로 변환한다.**
 
 ```java
 try {
@@ -224,6 +238,8 @@ http.exceptionHandling().authenticationEntryPoint(new GPAuthenticationEntryPoint
 
 ...
 ```
+
+<img src="https://docs.spring.io/spring-security/reference/_images/servlet/architecture/exceptiontranslationfilter.png">
 
 <br><br>
 
