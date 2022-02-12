@@ -52,7 +52,9 @@ The timeout for this transaction (in seconds).
 
 rollback, noRollback 대상 지정
 
-### 그 외
+<br><br>
+
+## 그 외
 
 https://techblog.woowahan.com/2606/ <br>
 > "  여기서 주목할 만한 사실은, 전파속성(*propagation*) 때문에 실제 트랜잭션이 재사용되더라도 트랜잭션 메서드의 반환시점마다 트랜잭션의 완료처리(completion)를 한다는 것입니다. 물론 커밋이나 롤백같은 최종완료처리는 최초 트랜잭션이 반환될 때 일어나겠지만요. "
