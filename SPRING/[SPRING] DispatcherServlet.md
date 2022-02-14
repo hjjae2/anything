@@ -123,7 +123,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 ```java
 public final class ApplicationFilterChain implements FilterChain {
 
-   ...
+    ...
 
     private void internalDoFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
 
@@ -244,27 +244,24 @@ public abstract class HttpServlet extends GenericServlet {
 
 public abstract class FrameworkServlet extends HttpServletBean implements ApplicationContextAware {
 
-    ...
+	...
 
-    @Override
-    protected final void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	@Override
+	protected final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request, response);  // <-- 여기
 	}
 
-   // Process this request, publishing an event regardless of the outcome.
-   // The actual event handling is performed by the abstract doService template method.
-	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	// Process this request, publishing an event regardless of the outcome.
+	// The actual event handling is performed by the abstract doService template method.
+	protected final void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		...
 
 		try {
-			doService(request, response);  // <-- 여기
+		    doService(request, response);  // <-- 여기
 		}
 		catch (ServletException | IOException ex) {
-            ...
+            	...
 		}
 		catch (Throwable ex) {
             ...
@@ -299,14 +296,14 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Keep a snapshot of the request attributes in case of an include,
 		// to be able to restore the original attributes after the include.
-      // (attributeSnapShow 저장)
+                // (attributeSnapShow 저장)
 		Map<String, Object> attributesSnapshot = null;
 		while(...) {
 		    attributesSnapshot.put(attrName, request.getAttribute(attrName));
 		}
 
 		// Make framework objects available to handlers and view objects.
-      // (HttpServletRequest 에 WebApplicationContext, localeResolver 등 저장)
+                // (HttpServletRequest 에 WebApplicationContext, localeResolver 등 저장)
 		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
 		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
 		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
@@ -329,6 +326,8 @@ public class DispatcherServlet extends FrameworkServlet {
 <br>
 
 ### 5. DispatcherServlet `doDispatch()`
+
+> 중요!
 
 (1) HandlerExecutionChain 객체 획득 (`getHandler()`) <br>
 (2) HandlerAdapter 객체 획득 (`getHandlerAdapter()`) <br>
@@ -470,7 +469,7 @@ public class DispatcherServlet extends FrameworkServlet {
 }
 ```
 
-<br><br>
+<br>
 
 ### 6. HandlerAdapter.handle() 호출
 
@@ -588,7 +587,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter {
 
 <br>
 
-**8. ServletInvocableHandlerMethod :: invokeAndHandle() 호출**
+### 8. ServletInvocableHandlerMethod :: invokeForRequest() 호출
 
 (1) `Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);` <br>
 (2) `this.returnValueHandlers.handleReturnValue(returnValue, getReturnValueType(returnValue), mavContainer, webRequest);`
@@ -845,6 +844,7 @@ try {
 (3) NativeMethodAccessorImpl :: invoke()   <br>
 
 <br><br>
+	
 ## 참고
 
 >Reference
