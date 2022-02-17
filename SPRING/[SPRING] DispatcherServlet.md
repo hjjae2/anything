@@ -618,6 +618,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		mavContainer.setRequestHandled(false);
 		Assert.state(this.returnValueHandlers != null, "No return value handlers");
 		try {
+			// returnValue 처리!!
 			this.returnValueHandlers.handleReturnValue(
 					returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
 		}
@@ -633,10 +634,51 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 }
 ```
 
+> this.returnValueHandlers = HandlerMethodReturnValueHandlerComposite.class
+
+```java
+public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodReturnValueHandler {
+
+	protected final Log logger = LogFactory.getLog(getClass());
+
+	private final List<HandlerMethodReturnValueHandler> returnValueHandlers = new ArrayList<>();
+	
+	...
+}
+```
+
+```java
+public class RequestResponseBodyMethodProcessor extends AbstractMessageConverterMethodProcessor {
+
+	...
+	
+	@Override
+	public boolean supportsReturnType(MethodParameter returnType) {
+		return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
+				returnType.hasMethodAnnotation(ResponseBody.class));
+	}
+	
+	...
+	
+	@Override
+	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
+			ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
+			throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
+
+		mavContainer.setRequestHandled(true);
+		ServletServerHttpRequest inputMessage = createInputMessage(webRequest);
+		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
+
+		// Try even with null return value. ResponseBodyAdvice could get involved.
+		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage); // <-- 여기서 HttpMessageConverter converters 가 사용되어 변환 처리
+	}
+	
+	...
+```
 
 <br>
 
-### 9. ServletInvocableHandlerMethod :: invokeAndHandle() 호출
+### 9. InvocableHandlerMethod :: invokeAndHandle() 호출
 
 (1) getMethodArgumentValues() : Object -> DTO 변환<br>
    - HandlerMethodArgumentResolver <br>
