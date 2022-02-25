@@ -1,22 +1,225 @@
----
-layout: post
-title: "SpringBoot :: N+1"
-author: "leehyunjae"
-tags: ["springboot", "java"]
----
-
-> N+1 문제에 대해 정리해보기
-
 ## N+1 문제
 
-쿼리를 통해 데이터를 가져왔는데, (연관관계에 있는) 원하는 데이터를 얻기 위해 추가적인 쿼리가 발생하는 문제이다.
+(쿼리를 통해 데이터를 가져올때) (연관관계에 있는)데이터를 얻기 위해 추가적인 쿼리가 발생하는 문제
 
 <br>
 
-**일단 내가 처음으로 떠올린 예시는 아래의 두 예시이다.**
+### 예시 : 단건 조회
+
+```java
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class Orders {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "orders")
+    private List<OrderItem> orderItems;
+}
+
+```
+
+**EAGER 방식**
+
+left join , inner join 으로 한번에 가져온다.  <br>
+> \* optional = false/true 에 따라 left, inner join 결정
+
+
+```sql
+select orders.id          
+       orders.customer_id 
+       orders.name        
+       customer.id        
+       customer.name      
+       order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name   
+       order_item.order_id
+from orders
+         left outer join customer on orders.customer_id = customer.id
+         left outer join order_item on orders.id = order_item.order_id
+where orders.id = ?
+```
+
+**LAZY 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders
+where orders.id = ?
+```
+
+<br>
+
+### 사용자 정의 메서드 단건 조회
+
+```java
+Optional<Orders> findByName(String name);
+```
+
+**EAGER 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders orders
+where orders.name = ?
+
+select customer.id, customer.name
+from customer
+where customer.id = ?
+
+select order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name    
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+
+**LAZY 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders orders
+where orders.name = ?
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select customer.id, customer.name
+from customer
+where customer.id = ?
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select order_item.order_id
+       order_item.id      
+       order_item.id     
+       order_item.name   
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+
+<br>
+
+### 예시 : 리스트 조회
+
+**EAGER 방식**
+
+```sql
+-- orders 전체 조회 쿼리
+select orders.id, orders.customer_id, orders.name
+from orders
+
+-- customer 조회 쿼리
+select customer.id, customer.name
+from customer customer
+where customer.id = ?
+
+-- order_item 조회 쿼리
+select order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name    
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+**LAZY 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select customer.id, customer.name
+from customer customer
+where customer.id = ?
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name    
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+<br>
+
+### 사용자 정의 메서드 리스트 조회
+
+```java
+List<Orders> findAllByName(String name);
+```
+
+**EAGER 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders
+where orders.name = ?
+
+select customer.id, customer.name
+from customer customer
+where customer.id = ?
+
+select order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name    
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+
+**LAZY 방식**
+
+```sql
+select orders.id, orders.customer_id, orders.name
+from orders
+where orders.name = ?
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select customer.id, customer.name
+from customer customer
+where customer.id = ?
+
+-- (단, 해당 객체 필요/사용 시 발생)
+select order_item.order_id
+       order_item.id      
+       order_item.id      
+       order_item.name    
+       order_item.order_id
+from order_item
+where order_item.order_id = ?
+```
+
+
+<br>
+
+--- 
+## 이전 작성 글
+
+
 
 ```text
-// Entity 예시
 Person person * --- 1 Company compnay
 ```
 
@@ -25,8 +228,8 @@ Person person * --- 1 Company compnay
 ### 첫 번째 예시
 
 1. Person 객체의 리스트를 조회하고
-2. Person 객체의 엮인 Company 객체를 조회한다고 해보자.<br>
-> \* Person 객체에 엮인 Company 는 모두 다르다고 가정하자.
+2. Person 객체의 엮인 Company 객체를 조회한다고 가정<br>
+> \* Person 객체에 엮인 Company 는 모두 다르다고 가정
 
 ```java
 class Test {
