@@ -52,6 +52,38 @@ The timeout for this transaction (in seconds).
 
 rollback, noRollback 대상 지정
 
+
+<br>
+
+**[참고] Transaction 롤백 대상에 관하여,**
+
+> " By default, a transaction will be rolling back on RuntimeException and Error but not on checked exceptions (business exceptions). See org.springframework.transaction.interceptor.DefaultTransactionAttribute.rollbackOn(Throwable) for a detailed explanation. "
+
+DefaultTransactionAttribute 내용을 살펴보면, 다음과 같다.
+
+RuntimeException, Error = unexpected outcome
+CheckedException = expected outcome
+
+```java
+
+public class DefaultTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
+    ...
+
+    /**
+     * The default behavior is as with EJB: rollback on unchecked exception (RuntimeException), assuming an unexpected outcome outside of any business rules. 
+     * Additionally, we also attempt to rollback on Error which is clearly an unexpected outcome as well.
+     * By contrast, a checked exception is considered a business exception and therefore a regular expected outcome of the transactional business method, i.e. a kind of alternative return value which still allows for regular completion of resource operations.
+     */
+
+    @Override
+	public boolean rollbackOn(Throwable ex) {
+		return (ex instanceof RuntimeException || ex instanceof Error);
+	}
+
+    ...
+}
+```
+
 <br><br>
 
 ## 그 외
