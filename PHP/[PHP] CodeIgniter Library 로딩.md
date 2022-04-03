@@ -1,30 +1,25 @@
----
-layout: post
-title: "CodeIgniter :: Library 로딩이 동작하는 원리"
-author: "leehyunjae"
-tags: ["codeigniter", "php"]
----
-
 > 이번 글은 CodeIgniter 2.x 기준으로 작성된 글이며, 커스터마이징 되어 있는 부분이 있기에 일반적인 상황과 조금은 다를 수 있습니다.
 
 <br>
 
-### 개요
+## 개요
 
-회사에서 PHP 프레임워크 CodeIgniter(2.x, 3.x)를 사용하고 있다. 
+> (팀에서) PHP 프레임워크 CodeIgniter(2.x, 3.x)를 사용하고 있다. 
 
-CodeIgniter는 MVC 패턴으로, 대부분이 그렇듯 controller 는 client 의 요청을 받고, view 는 화면 노출을 위해 사용되며 model 은 DB I/O 역할을 수행한다.
+CodeIgniter는 MVC 패턴으로, <br>
+대부분이 그렇듯 controller 는 client 의 요청을 받고, view 는 화면 노출을 위해 사용되며 model 은 DB I/O 역할을 수행한다.
 
 <br>
 
-여기에 추가로 library 라는 개념(디렉터리 구조에 포함)이 있다. Library 는 말그대로 공통으로 사용될 기능들에 대한 클래스(library)를 만들어두고 사용하기 위해 존재한다.
+여기에 추가로 `Library` 라는 개념(디렉터리 구조에 포함)이 있다. <br>
+`Library` 는 말그대로 공통으로 사용될 기능들에 대한 클래스(library)를 만들어두고 사용하기 위해 존재한다.
 
 <br>
 
 예를 들어 아래와 같이 사용한다.
 
 ```php
-// github_library 라는 라이브러라가 있다고 가정한다.
+// github_library 라는 라이브러리가 있다고 가정한다.
 $this->load->library("github_library");
 
 $this->github_library->commit();
@@ -37,7 +32,7 @@ $this->github_library->pull();
 
 ```php
 // $this->load->library(library파일명(경로), library 생성자 데이터, Alias)
-$this->load->library("githubLibrary", $constructParameter, "github")
+$this->load->library("github_library", $constructParameter, "github")
 
 $this->github->commit();
 $this->github->pull();
@@ -45,13 +40,16 @@ $this->github->pull();
 
 <br>
 
-프로젝트마다 컨벤션(camelCase, snake_case)이 조금씩 다르다. 그래서 종종 alias 를 걸어 사용하곤 했다.
+프로젝트마다 컨벤션(camelCase, snake_case)이 조금씩 다르다. 그래서 alias 를 걸어 사용할 수 있다.
 
 <br><br>
 
-### 문제
+## 문제
 
 그런데 우연히 아래와 같은 오류를 만났다.
+
+> 1. alias 와 함께 로드
+> 2. alias 없이 로드
 
 ```php
 // A.class
@@ -71,13 +69,18 @@ $this->load->library("github_library");
 $this->github_library->pull(); // <-- 오류(Null) 발생
 ```
 
-`A class` 에서 `github_library`에 alias 를 걸어 사용했고, 이후에 동작한 `B class` 에서는 alias 를 걸지 않은 상태였다. 그런데 `B class` 에서 load 한 `github_library`를 null 로 인식하고 오류를 발생시켰다. 
+`A class` 에서 `github_library`에 alias 를 걸어 사용했고, 이후에 동작한 `B class` 에서는 alias 를 걸지 않은 상태였다. <br>
+그런데 `B class` 에서 load 한 `github_library`를 null 로 인식하고 오류를 발생시켰다. 
 
-파일명을 잘못 작성한건지, 오타를 낸건지, 실수한 부분이 있는 줄 알고 한참을 확인했다. 그러다 혹시나해서 `B class`에서 `$this->github->pull()` 과 같이 작성하고 동작시켜봤는데, 잘 동작했다.(...?)
+파일명을 잘못 작성한건지, 오타를 낸건지, 실수한 부분이 있는 줄 알고 한참을 확인했다. <br>
+그러다 혹시나해서 `B class`에서 `$this->github->pull()` 과 같이 작성하고 동작시켜봤는데, 잘 동작했다.(...?)
 
 <br>
 
-CodeIgniter 가 기본적으로 싱글톤 패턴으로 동작하기 때문이라고 보기엔 조금 애매했다. 아래와 같은 코드는 동작했기 때문이다.
+**CodeIgniter 가 기본적으로 싱글톤 패턴으로 동작하기 때문이라고 보기엔 조금 애매했다. 아래와 같은 코드는 동작했기 때문이다.**
+
+> 1. alias 없이 로드
+> 2. alias 와 함께 로드
 
 ```php
 // A.class
@@ -99,11 +102,14 @@ $this->github->pull(); // 정상 동작!
 
 <br><br>
 
-### Codeigniter 에서는 libary 를 어떻게 load 할까?
+## Codeigniter 에서는 libary 를 어떻게 load 할까?
 
-일단 CodeIgniter 의 global instance 를 출력해봤다. 내용이 정말 많았지만 그 중 `github` 은 (global instance의)property로 잡혀있는데 `github_library` 는 propery 로 잡혀있지 않은 것을 확인할 수 있었다.
+> *Codeigniter 에서는 최상단에 하나의 Global Instance 가 있다. (Spring 의 컨테이너 개념과 유사) <br>
+>  이 object에 library, model, 각종 class 들을 property로 주입(?)시켜 사용하는 개념이다. Global Instance 는 `$this` 변수로 접근할 수 있어서 위의 예시처럼 `$this->github` 과 같이 사용할 수 있는 것이다.*
 
-> *Codeigniter 에서는 최상단에 하나의 Global Instance 가 있다. 이 object에 library, model, 각종 class 들을 property로 주입(?)시켜 사용하는 개념이다. Global Instance 는 `$this` 변수로 접근할 수 있어서 위의 예시처럼 `$this->github` 과 같이 사용할 수 있는 것이다.*
+일단 CodeIgniter 의 global instance 를 출력해봤다. <br>
+내용이 정말 많았지만 그 중 `github` 은 (global instance의)property로 잡혀있는데 `github_library` 는 propery 로 잡혀있지 않은 것을 확인할 수 있었다.
+
 
 ```php
 Index Object
@@ -198,7 +204,8 @@ protected function _ci_load_library($class, $params = NULL, $object_name = NULL)
 
 <br>
 
-현재 회사에서는 (버전, 커스터마이징에 의해) 위의 내용과는 약간 다르다. 실제 소스는 아래의 형태와 같다.
+현재 회사에서는 (버전, 커스터마이징에 의해) 위의 내용과는 약간 다르다.
+실제 소스는 아래의 형태와 같다.
 
 ```php
 protected function _ci_load_library($class, $params = NULL, $object_name = NULL)
@@ -259,6 +266,8 @@ protected function _ci_load_library($class, $params = NULL, $object_name = NULL)
     ...
 ```
 
+<br><br>
+
 **위의 코드에서 핵심인 부분이 있다.**
 
 ```php
@@ -290,7 +299,8 @@ if (in_array($filepath, $this->_ci_loaded_files)) {
    
 2. 여기서 `$object_name` 이 바로 alias 인데, alias 값이 있으면 global instance 에 해당 alias로 propery가 설정되어 있는지 체크하고, 없다면 load 한다. (`$this->_ci_load_library($class, '', $params, $object_name)`)
 
-3. <u>그런데 `$object_name` 이 없으면, object 의 property 를 검사하지 않고 중복된 선언이라며 log 를 남긴고 끝내버린다.</u> (`log_message('debug', $class." class already loaded. Second attempt ignored.");`)
+3. <u>그런데 `$object_name` 이 없으면, object 의 property 를 검사하지 않고 중복된 선언이라며 log 를 남긴고 끝내버린다.</u> <br>
+   (`log_message('debug', $class." class already loaded. Second attempt ignored.");`)
 
 <br>
 
@@ -331,11 +341,21 @@ DEBUG - 2021-07-19 21:43:24 --> ...
 
 <br><br>
 
-### 해결 방법
+## 해결 방법
 
 
-1. `core/Loader.php` 쪽의 코드를 수정
-   - 현재 버전에서는 위와 같은 문제는 해결된 것으로 보여진다. ([GitHub](https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Loader.php#L1006))
+**1. `core/Loader.php` 코드 수정**
 
-2. `alias` 를 사용하지 않음<br>
-   - `alias` 를 사용하지 말자는 것은, 그냥 포기하는 것은 아니다. (사실)여태껏 작성되어 있는 코드의 대부분이 alias가 적용되어 있지 않기 때문에 오히려 alias 를 적용한 코드가 통일성을 깨고 있다고 생각했기 때문이다.
+현재 버전에서는 위와 같은 문제는 해결된 것으로 보여진다. ([GitHub](https://github.com/bcit-ci/CodeIgniter/blob/develop/system/core/Loader.php#L1006))
+
+
+<br>
+
+**2. 컨벤션 통일**
+
+`alias`를 모두 사용하거나, `alias`를 모두 사용하지 않는다는 컨벤션을 적용할 수 있다면, 더 효과적으로 속성(property)을 관리할 수 있을 것이다.
+
+> 예를 들어, 위의 예시는 결국 동일한 클래스를 2번 로딩/주입하는 것이기 때문이다.
+
+다만, 레거시 프로젝트의 특성상 이전부터 컨벤션이 적용되어 오지 않았기 때문에 이를 모두 수정하는 작업은 쉽지 않다.
+
