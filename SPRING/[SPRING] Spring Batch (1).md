@@ -1,6 +1,45 @@
-## Metadata
+## 개요
 
-### BATCH_JOB_INSTANCE
+<img src="https://docs.spring.io/spring-batch/docs/current/reference/html/images/spring-batch-reference-model.png">
+
+
+<br>
+
+> *"  A Job has one to many steps, each of which has exactly one ItemReader, one ItemProcessor, and one ItemWriter "*
+
+하나의 Job 은 여러 Step 을 갖는다.
+
+하나의 Step 은 각각 1개의 ItemReader, ItemProcessor, ItemWriter 를 갖는다.
+
+
+<br>
+
+## Job
+
+> *" A Job is an entity that encapsulates an entire batch process. "*
+
+하나의 잡은 Batch Process 를 표현하는 수단으로 볼 수 있음
+
+Job은 작업이 무엇이고, 어떻게 하는지 에 대해 정의
+
+<br>
+
+Job 은 다음과 같은 정보를 포함
+
+- Job 이름 
+- Step 순서 (Step 에 대한 정의) (Definition and ordering of Step instances.)
+- 재시작할 수 있는지에 대한 여부 (Whether or not the job is restartable.)
+
+<br>
+
+## JobInstance
+
+> *" A JobInstance refers to the concept of a logical job run. "*
+
+Job 의 논리적인 실행 개념(인스턴스)
+
+(+ 중복되지 않은 JobParameter) JobInstance 실행 가능
+
 
 **JOB INSTANCE 정보**
 
@@ -13,9 +52,52 @@
 +---------------+-------+--------------------------+--------------------------------+
 ```
 
+
 <br>
 
-### BATCH_JOB_EXECUTION
+## JobParameters
+
+> *" How is one JobInstance distinguished from another?*
+> 
+> *The answer is: JobParameters.*
+> 
+> *A JobParameters object holds a set of parameters used to start a batch job.*
+> 
+> *They can be used for identification or even as reference data during the run "*
+
+<br>
+
+**JOB EXECUTION PARAMETER 정보**
+
+> Job 실행 시 넘긴 파라미터 정보가 기록된다.
+
+(JOB_EXECUTION_ID) JOB_EXECUTION 을 바라본다.
+
+```text
++----------------+-------+--------+----------+-------------------+--------+----------+-----------+
+|JOB_EXECUTION_ID|TYPE_CD|KEY_NAME|STRING_VAL|DATE_VAL           |LONG_VAL|DOUBLE_VAL|IDENTIFYING|
++----------------+-------+--------+----------+-------------------+--------+----------+-----------+
+|42              |STRING |version |1.3       |1970-01-01 09:00:00|0       |0         |Y          |
+|43              |STRING |version |1.3       |1970-01-01 09:00:00|0       |0         |Y          |
++----------------+-------+--------+----------+-------------------+--------+----------+-----------+
+```
+
+<br>
+
+## JobExecution
+
+> *" A JobExecution refers to the technical concept of a single attempt to run a Job. "*
+
+Job(JobInstance)의 단일 시도
+
+> *" An execution may end in failure or success, but the JobInstance corresponding to a given execution is not considered to be complete unless the execution completes successfully. "*
+
+JobExecution 은 성공/실패 로 끝날 수 있음<br>
+하지만 JobInstance 는 JobExecution 이 완벽하게 성공하지 않으면 완료되지 않음
+
+실행(시도) 중 실제 발생한 것에 대해 기록한다.
+
+<br>
 
 **JOB INSTANCE 실행 기록**
 
@@ -49,27 +131,6 @@
 
 <br>
 
-### BATCH_JOB_EXECUTION_PARAMS
-
-**JOB EXECUTION PARAMETER 정보**
-
-> Job 실행 시 넘긴 파라미터 정보가 기록된다.
-
-(JOB_EXECUTION_ID) JOB_EXECUTION 을 바라본다.
-
-```text
-+----------------+-------+--------+----------+-------------------+--------+----------+-----------+
-|JOB_EXECUTION_ID|TYPE_CD|KEY_NAME|STRING_VAL|DATE_VAL           |LONG_VAL|DOUBLE_VAL|IDENTIFYING|
-+----------------+-------+--------+----------+-------------------+--------+----------+-----------+
-|42              |STRING |version |1.3       |1970-01-01 09:00:00|0       |0         |Y          |
-|43              |STRING |version |1.3       |1970-01-01 09:00:00|0       |0         |Y          |
-+----------------+-------+--------+----------+-------------------+--------+----------+-----------+
-```
-
-<br>
-
-### BATCH_JOB_EXECUTION_CONTEXT
-
 **JOB EXECUTION CONTEXT 정보**
 
 (JOB_EXECUTION_ID) JOB_EXECUTION 을 바라본다.
@@ -84,9 +145,27 @@
 +----------------+------------------------------+------------------+
 ```
 
+
 <br>
 
-### BATCH_STEP_EXECUTION
+## Step
+
+- Job의 '단계'를 의미
+- Job은 한 개 이상의 Step 으로 구성
+
+<img src="https://docs.spring.io/spring-batch/docs/current/reference/html/images/jobHeirarchyWithSteps.png">
+
+<br>
+
+## StepExecution
+
+- **'Step' 의 '단일 시도'를 의미**
+  - Step 이 동작할 때마다, StepExecution 생성되는 개념
+- JobExecution, Step, Commit Count, Read Count, Filter Count, Write Count, ExecutionContext 등 포함
+
+> *" ExecutionContext, which contains any data a developer needs to have persisted across batch runs, such as statistics or state information needed to restart.  "*
+
+<br>
 
 **STEP 실행 기록**
 
@@ -131,7 +210,11 @@
 
 <br>
 
-### BATCH_STEP_EXECUTION_CONTEXT
+## ExecutionContext
+
+> " An ExecutionContext represents a collection of key/value pairs that are persisted and controlled by the framework in order to allow developers a place to store persistent state that is scoped to a StepExecution object or a JobExecution object. "
+
+<br>
 
 **JOB EXECUTION CONTEXT 정보**
 
@@ -143,3 +226,8 @@
 |66               |{"@class":"java.util.HashMap","batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep","AbstractPagingItemReader.read.count":8}|NULL              |
 +-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+
 ```
+
+<br><br>
+
+### References
+> https://docs.spring.io/spring-batch/docs/current/reference/html/domain.html#domainLanguageOfBatch
