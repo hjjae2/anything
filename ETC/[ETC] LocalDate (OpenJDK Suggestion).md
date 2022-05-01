@@ -42,4 +42,7 @@ Thus, this suggestion should be rejected.
 ```
 
 
+<br>
+
+### BUG DATABASE URL
 [JDK-8285775 : How about support LocalDate.tomorrow() and LocalDate.yesterday()](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8285775)
