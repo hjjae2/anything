@@ -319,6 +319,8 @@ public void test() {
 - Map 에 사용되는 Key, Value 형태를 다루기 위한 인터페이스
 - Map 인터페이스의 내부 인터페이스
 
+\* **각각의 구현체는 Entry 인터페이스의 구현체 (Node, Entry) 클래스를 가짐, entrySet 을 관리 (entrySet 은 순회등에서 사용)**
+
 ```java
 // 예시 : HashMap.Node 구현체
 static class Node<K, V> implements Entry<K, V> {
