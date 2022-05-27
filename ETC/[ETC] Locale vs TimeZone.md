@@ -66,3 +66,10 @@ UTC+9 시간대 (2022년 1월 1일 00시)
 > 개념적으로 거의 비슷해서, 혼용되어 사용되기도 한다고 한다.
 
 > https://datatracker.ietf.org/doc/html/rfc3339
+
+
+<br><br>
+
+## 참고
+
+1. https://velog.io/@kerri/TimeZone-Locale-DateFormat
