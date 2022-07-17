@@ -1,4 +1,4 @@
-### Channel
+## Channel
 
 > *" A nexus to a network socket or a component which is capable of I/O operations such as read, write, connect, and bind. "*
 
@@ -49,7 +49,7 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
 
 <br><br>
 
-### ChannelFuture
+## ChannelFuture
 
 **Channel I/O 비동기 작업의 결과이다.**
 
@@ -122,7 +122,7 @@ await 보다 addListener 를 권장한다.
 
 <br><br>
 
-### ChannelHandler
+## ChannelHandler
 
 I/O 이벤트를 처리(핸들링)하거나, I/O 작업을 가로챈다.(intercept) <br>
 그리고 (이벤트)를 (ChannelPipeline 의) 다음 핸들러로 전달한다.
@@ -270,7 +270,7 @@ public interface ChannelHandler {
 
 <br><br>
 
-### ChannelPipeline
+## ChannelPipeline
 
 ChannelHandler 들의 리스트이다.
 
@@ -444,7 +444,7 @@ Outbound event propagation methods:
 
 <br><br>
 
-### EventLoop
+## EventLoop
 
 일단 등록되면, `Channel`을 위한 모든 I/O 작업을 처리한다.
 
@@ -520,7 +520,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
 <br><br>
 
-### EventLoopGroup
+## EventLoopGroup
 
 > " Special EventExecutorGroup which allows registering Channels that get processed for later selection during the event loop. "
 
@@ -565,7 +565,7 @@ public interface EventLoopGroup extends EventExecutorGroup {
 
 <br><br>
 
-### 헷갈리는 부분
+## Note
 
 **EventLoop, EventLoopGroup 은 무엇인가?**
 
@@ -629,3 +629,16 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 ```
 
 > `EventLoop` 가 등록되지 않은 `Channel`은 `IllegalStateException` 이 발생한다.
+
+
+<br><br>
+
+## 참고
+
+> " 위의 이벤트 루프 모델을 잘 살펴보면 Netty를 이용하여 개발 할 때 주의해야할 점이 한 가지 있습니다. 바로 이벤트 루프 스레드가 blocking되면 안되는 것인데요. 이벤트 루프 스레드가 blocking되어 버리면 해당 이벤트 루프에 등록된 Channel들에서 발생한 이벤트들이 제때 처리되지못하고 요청들이 밀려버리는 상황이 발생합니다.
+> 
+> (... 중략)
+> 
+> Netty에서는 이런 blocking작업을 어떻게 처리해야할까요? Netty는 이벤트 루프가 blocking되지 않게 blocking구간이 있는 ChannelHandler를 별도의 EventExecutor에서 실행될 수 있도록 지원합니다. " 
+> 
+> [출처 : Netty의 스레드 모델](https://effectivesquid.tistory.com/65)
