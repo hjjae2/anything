@@ -6,7 +6,7 @@
 
 ## :zap: testCompilePath & testRuntimeClasspath
 
-<img src="../images/[GRADLE]%20Basic_51.png">
+<img src="../images/[GRADLE]%20Basic_52.png">
 
 <br>
 
