@@ -28,6 +28,11 @@
 
 ### Flow
 
+> https://dlsrb6342.github.io/2019/05/14/spring-cloud-gateway-%EA%B5%AC%EC%A1%B0/ 여기의 글도 보기 좋다.
+
+<img src="../images/scg_flow.png">
+
+
 
 ```text
 HttpServerOperations (reactor-netty-http)
@@ -39,10 +44,68 @@ HttpServerOperations (reactor-netty-http)
                                                           FilteringWebHandler.handle()
 ```
 
+<br><br>
+
+### DispatcherHandler
+
+```java
+public class DispatcherHandler implements WebHandler, PreFlightRequestHandler, ApplicationContextAware {
+
+	@Nullable
+	private List<HandlerMapping> handlerMappings;
+
+	@Nullable
+	private List<HandlerAdapter> handlerAdapters;
+
+	@Nullable
+	private List<HandlerResultHandler> resultHandlers;
+
+	...
+```
+
 <br>
 
-### RoutePredicateHandlerMapping (AbstractHandlerMapping, HandlerMapping)
+**HandlerMapping 은 기본적으로 아래 7가지를 가지고 있다.**
 
+> 이것들은 순서(Order)를 갖고 있다. 낮은 값(INT) 앞에 배치하고, 높은 값일수록 뒤에 배치한다.
+
+- AdditionalHealthEndpointPathsWebFluxHandlerMapping
+- WebFluxEndpointHandlerMapping
+- ControllerEndpointHandlerMapping
+- RouterFunctionMapping
+- RequestMappingHandlerMapping
+- RoutePredicateHandlerMapping
+- SimpleUrlHandlerMapping
+
+![](../images/[SPRING]%20Spring%20Cloud%20Gateway%20(3)_19.png)
+
+![](../images/[SPRING]%20Spring%20Cloud%20Gateway%20(3)_54.png)
+
+<br>
+
+**HandlerAdapter 는 기본적으로 아래 4가지를 가지고 있다.**
+
+- WebSocketHandlerAdapter
+- RequestMappingHandlerAdapter
+- HandlerFunctionAdapter
+- SimpleHandlerAdapter
+
+![](../images/[SPRING]%20Spring%20Cloud%20Gateway%20(3)_35.png)
+
+<br>
+
+**HandlerResultHandler 는 기본적으로 아래 4가지를 가지고 있다.**
+
+- ResponseEntityResultHandler
+- ServerResponseResultHandler
+- ResponseBodyResultHandler
+- ViewResolutionResultHandler
+
+![](../images/[SPRING]%20Spring%20Cloud%20Gateway%20(3)_33.png)
+
+<br><br>
+
+### RoutePredicateHandlerMapping (AbstractHandlerMapping, HandlerMapping)
 
 **DispatcherHandler (WebHandler)**
 
@@ -104,6 +167,10 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 
 }
 ```
+
+<br><br>
+
+### RoutePredicateHandlerMapping
 
 ```java
 public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
@@ -182,9 +249,9 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 2022-07-17 20:01:37.968 DEBUG 91322 --- [ctor-http-nio-2] o.s.c.g.h.RoutePredicateHandlerMapping   : [d9c36f28-2] Mapped to org.springframework.cloud.gateway.handler.FilteringWebHandler@2937f9e0
 ```
 
-<br>
+<br><br>
 
-**FilteringWebHandler**
+### FilteringWebHandler
 
 ```java
 public class FilteringWebHandler implements WebHandler {
@@ -293,7 +360,7 @@ public class FilteringWebHandler implements WebHandler {
 ... [ctor-http-nio-2] r.n.r.DefaultPooledConnectionProvider    : [d27fde7a, L:/127.0.0.1:53841 ! R:localhost/127.0.0.1:8081] onStateChange(PooledConnection{channel=[id: 0xd27fde7a, L:/127.0.0.1:53841 ! R:localhost/127.0.0.1:8081]}, [disconnecting])
 ```
 
-<br>
+<br><br>
 
 ### 참고 (L, R, -, !)
 
