@@ -28,11 +28,12 @@
 
 ### Flow
 
-> https://dlsrb6342.github.io/2019/05/14/spring-cloud-gateway-%EA%B5%AC%EC%A1%B0/ 여기의 글도 보기 좋다.
-
 <img src="../images/scg_flow.png">
 
 
+> https://dlsrb6342.github.io/2019/05/14/spring-cloud-gateway-%EA%B5%AC%EC%A1%B0/ 여기의 글도 보기 좋다.
+
+<br>
 
 ```text
 HttpServerOperations (reactor-netty-http)
