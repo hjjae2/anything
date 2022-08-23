@@ -1,0 +1,1 @@
+![](../images/[SPRING]%20Spring%20Cloud%20Gateway%20-%205%20(RouteLocator)_35.png)
