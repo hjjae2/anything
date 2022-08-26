@@ -1,4 +1,4 @@
-![](../images/[AWS]%20Glue_43.png)
+<img src="../images/[AWS]%20Glue_43.png" width="60%">
 
 <br>
 
