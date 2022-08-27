@@ -132,3 +132,10 @@ Athena, Redshift Spectrum 은 AWS Glue Data Catalog 를 통해 S3에 직접적�
 <br>
 
 **4. You can use AWS Glue to understand your data assets.**
+
+<br><br>
+
+
+### 내용 추가
+
+<img src="../images/[AWS]%20Glue_23.png" width="70%">
