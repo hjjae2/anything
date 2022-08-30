@@ -139,3 +139,20 @@ Athena, Redshift Spectrum 은 AWS Glue Data Catalog 를 통해 S3에 직접적�
 ### 내용 추가
 
 <img src="../images/[AWS]%20Glue_23.png" width="70%">
+
+<br><br>
+
+
+### 내용 추가
+
+> Glue -> S3 Access Denied 403 오류 발생 시, 아래 내용을 확인해볼 수 있다.
+
+[AWS Glue 작업에서 403 Access Denied 오류가 반환되는 이유는 무엇입니까?](https://aws.amazon.com/ko/premiumsupport/knowledge-center/glue-403-access-denied-error/)
+
+- AWS Identity and Access Management(IAM) 역할에 버킷 액세스에 필요한 권한이 없습니다. (IAM Role)
+- Amazon S3 버킷 정책이 IAM 역할에 필요한 권한을 허용하지 않습니다. (Bucket Policy)
+- S3 버킷 소유자가 객체 소유자와 다릅니다. (S3 ACLs)
+- 객체가 AWS Key Management Service(AWS KMS)로 암호화되었고, AWS KMS 정책이 키 사용에 필요한 최소 권한을 IAM 역할에 부여하지 않습니다. (S3 Encryption)
+- ~~Amazon Virtual Private Cloud(Amazon VPC) 엔드포인트 정책에 S3 버킷 액세스에 필요한 권한이 없습니다.~~
+- ~~S3 버킷에 요청자 지불이 설정되어 있습니다.~~
+- ~~S3 버킷에 대한 액세스가 AWS Organizations 서비스 제어 정책에 의해 제한되었습니다.~~
