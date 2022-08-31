@@ -43,9 +43,28 @@ AWS service role 중 EC2 서비스를 위한 특별한 service role 이다. (EC2
 
 **Role chaining**
 
+`Role A` 가 `Role B`와 연결되어 있을 때(`Role A`가 `Role B`를 필요로 할 때?) Role chaining 을 통해 연결된 Role 까지 사용할 수 있도록 할 수 있다.
+
+다만, Role chaining 을 사용하면 credential(session) 정보는 최대 1시간으로 제한된다.
+
 <br>
 
 **Delegation**
+
+두 계정(accounts)간에 신뢰(trust)를 설정하여, 접근 권한을 부여할 수 있다.
+
+- The first is the account that owns the resource (the trusting account). 
+- The second is the account that contains the users that need to access the resource (the trusted account).
+
+Trusted/Trusting 계정은 다음 중 하나이다.
+
+- 동일 계정
+- Organization 하위의 다른 계정
+- 다른 Organization 의 다른 계정
+
+To delegate permission to access a resource, you create an IAM role in the trusting account that has two policies attached. The permissions policy grants the user of the role the needed permissions to carry out the intended tasks on the resource. The trust policy specifies which trusted account members are allowed to assume the role.
+
+When you create a trust policy, you cannot specify a wildcard (*) as a principal. The trust policy is attached to the role in the trusting account, and is one-half of the permissions. The other half is a permissions policy attached to the user in the trusted account that allows that user to switch to, or assume the role. A user who assumes a role temporarily gives up his or her own permissions and instead takes on the permissions of the role. When the user exits, or stops using the role, the original user permissions are restored. An additional parameter called external ID helps ensure secure use of roles between accounts that are not controlled by the same organization.
 
 <br>
 
@@ -58,6 +77,14 @@ AWS service role 중 EC2 서비스를 위한 특별한 service role 이다. (EC2
 <br>
 
 **Trust policy**
+
+신뢰하는 보안 주체(principals) 를 정의한 [`JSON policy document`](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_grammar.html) 이다.
+
+`A role trust policy`는 IAM role 에 연결된 필수적인 `resource-based policy` 이다.
+
+`보안 주체(principals)`는 `사용자(users)`, `역할(roles)`, `계정(accounts)`, `서비스(services)` 중에서 지정되는 값이다.
+
+> 좀 더 찾아볼 것
 
 <br>
 
@@ -72,6 +99,12 @@ The document is written according to the rules of the [IAM policy language.](htt
 
 **Permissions boundary**
 
+> " An advanced feature in which you use policies to limit the maximum permissions that an identity-based policy can grant to a role. "
+
+maximum permissions 를 제한(limit)할 수 있는 고급 기능(an advanced feature)이다.
+
+> " You cannot apply a permissions boundary to a service-linked role. "
+
 <br>
 
 **Principal**
@@ -83,3 +116,7 @@ actions, access resources 를 수행할 수 있는 하나의 엔티티(an entity
 - AWS account root user
 - IAM user
 - IAM role
+
+<br>
+
+**Role for cross-account access**
