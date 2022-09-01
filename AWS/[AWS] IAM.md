@@ -1,4 +1,38 @@
-### IAM roles
+## IAM
+
+AWS Identity and Access Management(IAM)는 AWS 리소스에 대한 access를 안전하게 제어할 수 있는 웹서비스이다.
+
+Entity(User, Group, Role)에 Policy를 적용해서 AWS 리소스(EC2, S3, RDS, ...) 에 대한 접근을 관리한다.
+
+> Keyword : User, Group, Role, Policy
+
+<br><br>
+
+## Terms
+
+### IAM Resources
+
+user, group, role, policy, identity provider objects 
+
+### IAM identities
+
+identify(식별), group(그룹화)에 사용되는 IAM resource object
+- IAM identity 에 policy(정책)을 연결(부여)할 수 있다.
+- ex : users, groups, roles 
+
+### IAM Entities
+
+authentication(인증)을 위해 사용하는 IAM resource object
+- ex : users and roles
+
+### Principle
+
+(AWS 리소스 사용을 위해) user(+ root user), role 를 사용하는 주체(person, application)
+- ex: federated users, assumed roles, ...
+
+
+
+### IAM Role
 
 하나의 `IAM role` 은 하나의 `IAM user` 와 유사하다.
 
