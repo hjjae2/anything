@@ -233,3 +233,59 @@ public class BasicErrorController extends AbstractErrorController {
 
     ...
 ```
+
+<br><br>
+
+## Spring 예외 처리 흐름
+
+<img src="../images/[SPRING]%20Spring%20MVC%20-%20Error_30.png" width="60%">
+
+> 출처 : [[Spring] Spring의 다양한 예외 처리 방법(ExceptionHandler, ControllerAdvice 등) 완벽하게 이해하기 - (1/2)](https://mangkyu.tistory.com/204)
+
+
+`WebMvcConfigurationSupport` 클래스를 참고하면, 아래 순서로 register 되는 것을 알 수 있다. (`addDefaultHandlerExceptionResolvers()`)
+
+1. ExceptionHandlerExceptionResolver
+2. ResponseStatusExceptionResolver
+3. DefaultHandlerExceptionResolver
+
+```java
+/**
+ * Registers a HandlerExceptionResolverComposite with this chain of exception resolvers:
+ *
+ * - ExceptionHandlerExceptionResolver for handling exceptions through org.springframework.web.bind.annotation.ExceptionHandler methods.
+ * - ResponseStatusExceptionResolver for exceptions annotated with org.springframework.web.bind.annotation.ResponseStatus.
+ * - DefaultHandlerExceptionResolver for resolving known Spring exception types
+ */
+public class WebMvcConfigurationSupport implements ApplicationContextAware, ServletContextAware {
+
+    ...
+
+    protected final void addDefaultHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers,
+			ContentNegotiationManager mvcContentNegotiationManager) {
+
+		ExceptionHandlerExceptionResolver exceptionHandlerResolver = createExceptionHandlerExceptionResolver();
+		exceptionHandlerResolver.setContentNegotiationManager(mvcContentNegotiationManager);
+		exceptionHandlerResolver.setMessageConverters(getMessageConverters());
+		exceptionHandlerResolver.setCustomArgumentResolvers(getArgumentResolvers());
+		exceptionHandlerResolver.setCustomReturnValueHandlers(getReturnValueHandlers());
+		if (jackson2Present) {
+			exceptionHandlerResolver.setResponseBodyAdvice(
+					Collections.singletonList(new JsonViewResponseBodyAdvice()));
+		}
+		if (this.applicationContext != null) {
+			exceptionHandlerResolver.setApplicationContext(this.applicationContext);
+		}
+		exceptionHandlerResolver.afterPropertiesSet();
+		exceptionResolvers.add(exceptionHandlerResolver);
+
+		ResponseStatusExceptionResolver responseStatusResolver = new ResponseStatusExceptionResolver();
+		responseStatusResolver.setMessageSource(this.applicationContext);
+		exceptionResolvers.add(responseStatusResolver);
+
+		exceptionResolvers.add(new DefaultHandlerExceptionResolver());
+	}
+```
+
+> 이 클래스(주석 내용)는 중요하다. 별도로 살펴보자.
+> 
