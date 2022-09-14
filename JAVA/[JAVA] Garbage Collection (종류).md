@@ -61,8 +61,32 @@
 
 > CMS GC를 대체하기 위해 만들어졌다고 한다.
 
+> jdk11 부터 기본 GC 알고리즘으로 적용되었다.
+
+> HW 발전 → 대용량 메모리에 적합한 솔루션을 제공하기 위해 고안되었다.
+
 - Region 개념 도입
-- 
+  - Eden, Survivor, Old 영역이 존재하지만, 고정된 크기가 아니며 전체 Heap 메모리 영역을 Region 이라는 특정한 크기로 나눴다.
+  - Region 은 상태에 따라 역할(Eden, Survivor, Old)이 동적으로 변경된다.
+  - Default size = 전체 Heap 메모리 / 2048 
+
+<img src="../images/[JAVA]%20Garbage%20Collection%20(종류)_51.png" width="60%">
+
+<br>
+
+**Humonogous**
+
+(Region 크기의 50%를 초과하는) 큰 객체를 저장하기 위한 공간
+
+<br>
+
+**Available/Unused**
+
+아직 사용되지 않은(사용 가능한) Region
+
+<br>
+
+
 
 <br><br>
 
