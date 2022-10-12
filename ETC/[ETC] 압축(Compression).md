@@ -122,3 +122,4 @@ LZ77 은 1977년에 만들어져 LZ77이라고 한다. (LZ1 으로 표현되기�
 ### 참고
 
 - https://youtu.be/Yc_orrKXn1I
+- https://www.siteground.com/blog/brotli-vs-gzip-compression/
