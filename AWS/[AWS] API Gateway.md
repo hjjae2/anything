@@ -32,7 +32,16 @@ https://api-id.execute-api.region.amazonaws.com/stage
 
 <br><br>
 
+### With AWS Lambda
+
+> https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
+
+AWS Lambda Function을 호출하는 형태로 사용할 수도 있다.
+
+> *You can create a web API with an HTTP endpoint for your Lambda function by using Amazon API Gateway.*
+
 ### 참고
 
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
+- https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
