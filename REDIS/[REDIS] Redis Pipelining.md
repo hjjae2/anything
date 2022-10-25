@@ -273,6 +273,15 @@ public class LettuceConnection extends AbstractRedisConnection {
 
 <br><br>
 
+### 추가
+
+**1. command 의 순서가 변경되지 않는다.**
+
+Redis pipelining 은 단순히 요청을 한번에 보내는 것일 뿐 요청(커맨드)의 순서에 영향을 주지 않는다. <br>
+공식 문서에서 이것과 관련된 내용은 못찾았다. 다만, [여기](https://stackoverflow.com/questions/17634826/redis-pipelined-order-of-execution)를 포함해 다른 글들을 참고할 수 있을 것 같다.
+
+<br><br>
+
 ### 출처
 
 - [Redis pipelining](https://redis.io/topics/pipelining)
