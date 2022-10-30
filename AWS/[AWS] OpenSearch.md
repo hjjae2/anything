@@ -25,15 +25,17 @@ ISM(Index Statement Management)을 통해,
 
 각 state 내에서는, 수항핼 작업(actions)들과 전환(transitions) + 전환을 트리거할 조건(conditions)들을 정의할 수 있다. 
 
-**예시**
-
-일정 기간 후에 오래된 인덱스를 주기적으로 삭제할 수 있다. 인덱스 30일 후에 `read_only` 상태로 이동한 후, 90일 이후에 삭제하는 정책을 정의할 수 있다.
-
-정책(policy)을 인덱스(index)에 연결(attach)하면, ISM은 30~48분마다 action을 실행하고, condition을 체크하고, 인덱스의 state를 transition하는 Job을 생성한다. 
+**정책(policy)을 인덱스(index)에 연결(attach)하면, ISM은 30~48분마다 action을 실행하고, condition을 체크하고, 인덱스의 state를 transition하는 Job을 생성한다.**
 
 이 Job은 기본적으로 매 30분마다 동작하지만, +0~60%(즉 최대 48분 까지) jitter가 더해진다. 이유는 인덱스에 동시에 많은 작업 활동들이 급증하지 않도록 하기 위해서이다. (클러스터 상태가 빨간색이면 ISM 은 Job을 실행하지 않는다.)
 
 ISM은 OpenSearch / Elasticsearch 6.8 이상의 버전에서 동작한다.
+
+<br>
+
+**예시**
+
+일정 기간 후에 오래된 인덱스를 주기적으로 삭제할 수 있다. 인덱스 30일 후에 `read_only` 상태로 이동한 후, 90일 이후에 삭제하는 정책을 정의할 수 있다.
 
 <br><br>
 
