@@ -104,7 +104,7 @@ Kafka Connect 는 데이터를 처리(for moving data)하기 위해 `worker` 를
 
 어떻게 데이터를 처리하는지(읽기, 쓰기)에 대한 방식을 아는 애다.
 
-예를 들어 'SQL Database -> Kafka' 일 떄 `JDBC connector plugin` 을 사용할 수 
+예를 들어 'RDB -> Kafka' 일 떄 `JDBC connector plugin` 을 사용할 수 있다.
 
 <br><br>
 
