@@ -3,6 +3,8 @@
 
 > https://docs.confluent.io/platform/current/ schema-registry/index.html#schemas-subjects-and-topics
 
+<br>
+
 ### [Apache Avro](https://avro.apache.org/docs/)
 
 > *" Apache Avro™ is the leading serialization format for record data, and first choice for streaming data pipelines. It offers excellent schema evolution, and has implementations for the JVM (Java, Kotlin, Scala, …), Python, C/C++/C#, PHP, Ruby, Rust, JavaScript, and even Perl. "*
