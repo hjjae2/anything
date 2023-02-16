@@ -18,3 +18,15 @@
 ![](../images/[AWS]%20Batch_43.png)
 
 새로운 launch template 을 사용하기 위해서, 새로운 compute environment 생성이 필요하다.
+
+<br>
+
+### [Job Scheduling (w/ stuck)](https://docs.aws.amazon.com/batch/latest/userguide/job_scheduling.html)
+
+> *" The AWS Batch scheduler evaluates when, where, and how to run jobs that are submitted to a job queue. If you don’t specify a scheduling policy when you create a job queue, the AWS Batch job scheduler defaults to a first-in, first-out (FIFO) strategy. A FIFO strategy might cause important jobs to get “stuck” behind jobs that were submitted earlier. By specifying a different scheduling policy, you can allocate compute resources according to your specific needs. "*
+
+<br>
+
+### [Jobs stuck in a RUNNABLE status](https://docs.aws.amazon.com/batch/latest/userguide/troubleshooting.html#job_stuck_in_runnable)
+
+![](../images/[AWS]%20Batch_04.png)
